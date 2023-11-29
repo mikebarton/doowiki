@@ -1,0 +1,6 @@
+@doowiki.api_HostAddress = http://localhost:5058
+
+GET {{doowiki.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

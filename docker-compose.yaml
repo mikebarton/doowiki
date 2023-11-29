@@ -1,0 +1,13 @@
+services:
+  mysql:
+    container_name: doowiki-mysql
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password' # TODO: Change this
+      MYSQL_USER: 'dev'
+      MYSQL_PASS: 'telogreika'
+    volumes:
+      - C:\Users\michael.barton\doowiki-volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
