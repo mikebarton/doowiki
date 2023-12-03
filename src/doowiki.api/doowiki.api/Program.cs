@@ -1,7 +1,6 @@
 
-using doowiki.api.Documents;
-using doowiki.api.UserManagement;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace doowiki.api
 {
@@ -10,25 +9,23 @@ namespace doowiki.api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var dataConnectionString = builder.Configuration.GetConnectionString("doowiki-mysql");
-            // Add services to the container.
-            builder.Services.AddDbContext<UserManagementDbContext>(options =>
-            {
-                var dataConnectionString = builder.Configuration.GetConnectionString("doowiki-mysql");
-                if (string.IsNullOrEmpty(dataConnectionString))
-                    throw new ArgumentNullException("doowiki-myself - connection string");
+            
+            
+            
 
-                options.UseMySql(builder.Configuration.GetConnectionString("doowiki-mysql"), ServerVersion.AutoDetect(dataConnectionString));
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
             });
 
-            builder.Services.AddDbContext<DocumentDbContext>(options =>
-            {
-                var dataConnectionString = builder.Configuration.GetConnectionString("doowiki-mysql");
-                if (string.IsNullOrEmpty(dataConnectionString))
-                    throw new ArgumentNullException("doowiki-myself - connection string");
 
-                options.UseMySql(builder.Configuration.GetConnectionString("doowiki-mysql"), ServerVersion.AutoDetect(dataConnectionString));
-            });
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +42,9 @@ namespace doowiki.api
 
             app.UseHttpsRedirection();
 
+            //app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

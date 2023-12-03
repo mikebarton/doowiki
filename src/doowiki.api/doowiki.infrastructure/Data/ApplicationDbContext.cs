@@ -1,0 +1,23 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using doowiki.domain.Wiki;
+
+namespace doowiki.infrastructure.Data
+{
+    internal class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> context) : base(context)
+        {
+
+        }
+
+        public DbSet<DocumentMetaData> Documents { get; set; }
+        public DbSet<WikiUser> Users { get; set; }
+        public DbSet<Space> Spaces { get; set; }
+        
+    }
+}
