@@ -1,5 +1,6 @@
 ﻿using doowiki.infrastructure.Data;
 using doowiki.infrastructure.Identity;
+using doowiki.application.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.infrastructure
 {
-    internal static class InfrastructureRegistrationExtensions
+    public static class InfrastructureRegistrationExtensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration config)
         {
@@ -24,6 +25,7 @@ namespace doowiki.infrastructure
 
             services.AddDbContext<IdentityDbContext>(options => options.UseMySql(dataConnectionString, ServerVersion.AutoDetect(dataConnectionString)));
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(dataConnectionString, ServerVersion.AutoDetect(dataConnectionString)));
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
             services.Configure<IdentityOptions>(options =>
             {

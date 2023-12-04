@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using doowiki.domain;
 
 namespace doowiki.application.Common.Interfaces
 {
-    internal interface IApplicationDbContext
+    public interface IApplicationDbContext
     {
         public DbSet<DocumentMetaData> Documents { get; }
-        public DbSet<WikiUser> Users { get; }
+        public DbSet<domain.Wiki.WikiUser> Users { get; }
         public DbSet<Space> Spaces { get; }
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

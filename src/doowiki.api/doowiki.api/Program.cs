@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using doowiki.infrastructure;
+using doowiki.application;
 
 namespace doowiki.api
 {
@@ -9,9 +11,11 @@ namespace doowiki.api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            
-            
+
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            //builder.Services.AddWebServices();
+
 
             builder.Services.ConfigureApplicationCookie(options =>
             {

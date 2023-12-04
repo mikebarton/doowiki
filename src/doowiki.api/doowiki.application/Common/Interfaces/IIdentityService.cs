@@ -11,11 +11,13 @@ namespace doowiki.application.Common.Interfaces
     {
         Task<string?> GetUserNameAsync(Guid userId);
 
+        Task<bool> AddUserToRole(Guid userId, params string[] roleNames);
+
         Task<bool> IsInRoleAsync(Guid userId, string role);
 
-        Task<bool> AuthorizeAsync(Guid userId, string policyName);
+        //Task<bool> AuthorizeAsync(Guid userId, string policyName);
 
-        Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password);
+        Task<(Result Result, Guid UserId)> CreateUserAsync(string email, string password);
 
         Task<Result> DeleteUserAsync(Guid userId);
     }

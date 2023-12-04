@@ -34,27 +34,20 @@ namespace doowiki.infrastructure.Identity
             return user.UserName;
         }
 
-        public async Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password)
+        public async Task<(Result Result, Guid UserId)> CreateUserAsync(string email, string password)
         {
             var user = new AppUser
             {
-                UserName = userName,
-                Email = userName,
-            };
-
+                UserName = email,
+                Email = email,
+            };            
+            
             var result = await _userManager.CreateAsync(user, password);
 
             return (result.ToApplicationResult(), user.Id);
         }
 
-        public async Task<bool> IsInRoleAsync(Guid userId, string role)
-        {
-            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
-            return user != null && await _userManager.IsInRoleAsync(user, role);
-        }
-
-        public async Task<bool> AuthorizeAsync(Guid userId, string policyName)
+        public async Task<bool> AddUserToRole(Guid userId, params string[] roleNames)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
@@ -63,12 +56,45 @@ namespace doowiki.infrastructure.Identity
                 return false;
             }
 
-            var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
-
-            var result = await _authorizationService.AuthorizeAsync(principal, policyName);
+            var result = await _userManager.AddToRolesAsync(user, roleNames);
 
             return result.Succeeded;
         }
+
+        //public async Task<bool> AddUserToPolicy(Guid userId, string[] policies)
+        //{
+        //    var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+        //    if (user == null)
+        //    {
+        //        return false;
+        //    }
+            
+        //    await _userManager.AddClaimsAsync(user, policies.Select(x=> ))
+        //}
+
+        public async Task<bool> IsInRoleAsync(Guid userId, string role)
+        {
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            return user != null && await _userManager.IsInRoleAsync(user, role);
+        }
+
+        //public async Task<bool> AuthorizeAsync(Guid userId, string policyName)
+        //{
+        //    var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+        //    if (user == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+
+        //    var result = await _authorizationService.AuthorizeAsync(principal, policyName);
+
+        //    return result.Succeeded;
+        //}
 
         public async Task<Result> DeleteUserAsync(Guid userId)
         {
