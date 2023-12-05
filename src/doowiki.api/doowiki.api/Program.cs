@@ -3,46 +3,55 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using doowiki.infrastructure;
 using doowiki.application;
+using doowiki.infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
+using doowiki.api.Infrastructure;
 
 namespace doowiki.api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices(builder.Configuration);
-            //builder.Services.AddWebServices();
+            builder.Services.AddWebServices();
 
 
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            //builder.Services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
-            });
+            //    options.LoginPath = "/Identity/Account/Login";
+            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            //    options.SlidingExpiration = true;
+            //});
 
 
             
-            builder.Services.AddControllers();
+            //builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+            var app = builder.Build();            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                await app.InitialiseDatabaseAsync();
             }
+            else
+            {
+                app.UseHsts();
+            }
+
+
 
             app.UseHttpsRedirection();
 
@@ -50,9 +59,8 @@ namespace doowiki.api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
-            app.MapControllers();
+            //app.MapControllers();
+            app.MapEndpoints();
 
             app.Run();
         }

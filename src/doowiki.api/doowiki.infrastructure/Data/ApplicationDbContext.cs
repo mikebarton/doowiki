@@ -9,7 +9,7 @@ using doowiki.application.Common.Interfaces;
 
 namespace doowiki.infrastructure.Data
 {
-    internal class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> context) : base(context)
         {

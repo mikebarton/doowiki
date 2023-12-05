@@ -36,6 +36,9 @@ namespace doowiki.infrastructure
                 options.User.RequireUniqueEmail = false;
             });
 
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>();
+
             services
             .AddDefaultIdentity<AppUser>()
             .AddRoles<IdentityRole>()
