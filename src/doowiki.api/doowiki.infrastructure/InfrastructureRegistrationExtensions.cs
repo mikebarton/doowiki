@@ -21,11 +21,12 @@ namespace doowiki.infrastructure
             if (string.IsNullOrEmpty(dataConnectionString))
                 throw new ArgumentNullException("doowiki-myself - connection string");
 
-
-
-            services.AddDbContext<IdentityDbContext>(options => options.UseMySql(dataConnectionString, ServerVersion.AutoDetect(dataConnectionString)));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySql(dataConnectionString, ServerVersion.AutoDetect(dataConnectionString)));
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(dataConnectionString, ServerVersion.AutoDetect(dataConnectionString)));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddScoped<ApplicationDbContextInitialiser>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -39,10 +40,15 @@ namespace doowiki.infrastructure
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();
 
-            services
-            .AddDefaultIdentity<AppUser>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services
+            //.AddDefaultIdentity<AppUser>()
+            //.AddRoles<AppRole>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<AppUser, AppRole>()
+            .AddEntityFrameworkStores<AppIdentityDbContext>()
+            .AddDefaultUI()
+            .AddDefaultTokenProviders();
 
             return services;
         }

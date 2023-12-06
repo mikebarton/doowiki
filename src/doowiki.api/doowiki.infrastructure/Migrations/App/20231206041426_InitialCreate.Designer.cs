@@ -11,7 +11,7 @@ using doowiki.infrastructure.Data;
 namespace doowiki.infrastructure.Migrations.App
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231206033316_InitialCreate")]
+    [Migration("20231206041426_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

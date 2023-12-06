@@ -36,12 +36,12 @@ namespace doowiki.api
             services.AddEndpointsApiExplorer();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            services.AddAuthorization(options =>
-            {
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            //        //.RequireAuthenticatedUser()
+            //        .Build();
+            //});
 
             services.AddOpenApiDocument((configure, sp) =>
             {
