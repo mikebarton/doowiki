@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Documents.Queries.GetDocument
 {
-    internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, DocumentDto>
+    internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, DocumentDto?>
     {
         private IApplicationDbContext _applicationDbContext;
         public GetDocumentHandler(IApplicationDbContext dbContext)
@@ -17,12 +17,15 @@ namespace doowiki.application.Documents.Queries.GetDocument
             _applicationDbContext = dbContext;            
         }
 
-        public async Task<DocumentDto> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
+        public async Task<DocumentDto?> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
         {
             var document = await _applicationDbContext.Documents
                 .Include(x => x.Content)
                 .Include(x=>x.Author)
-                .FirstAsync(x => x.DocumentId == request.DocumentId);
+                .FirstOrDefaultAsync(x => x.DocumentId == request.DocumentId);
+
+            if (document == null)
+                return null;
 
             var result = new DocumentDto
             {

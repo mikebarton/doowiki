@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Documents.Queries.GetDocument
 {
-    internal class DocumentDto
+    public class DocumentDto
     {
         public Guid DocumentId { get; set; }
         public string Name { get; set; }
