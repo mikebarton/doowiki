@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.infrastructure.Identity
 {
-    internal class IdentityDbContext : IdentityUserContext<AppUser, Guid>
+    public class IdentityDbContext : IdentityUserContext<AppUser, Guid>
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> context) : base(context)
         {

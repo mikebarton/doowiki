@@ -16,6 +16,14 @@ namespace doowiki.infrastructure.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<DocumentContent>().HasKey(x => x.DocumentId);
+            modelBuilder.Entity<DocumentMetaData>().HasKey(x => x.DocumentId);
+            modelBuilder.Entity<DocumentMetaData>().HasOne<DocumentContent>(x => x.Content).WithOne().HasForeignKey<DocumentContent>(x=>x.DocumentId);            
+        }
+
         public DbSet<DocumentMetaData> Documents { get; set; }
         public DbSet<WikiUser> Users { get; set; }
         public DbSet<Space> Spaces { get; set; }

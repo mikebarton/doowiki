@@ -14,8 +14,8 @@ namespace doowiki.domain.Wiki
         public string Name { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
         public DateTimeOffset UpdatedOn { get; set; }
-        public DocumentMetaData ParentDocument { get; set; }
-        public DocumentMetaData Children { get; set; }
+        public DocumentMetaData Parent { get; set; }
+        public List<DocumentMetaData> Children { get; set; }
         public WikiUser Author { get; set; }
         public DocumentContent Content { get; set; }
     }
