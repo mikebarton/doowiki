@@ -2,7 +2,10 @@
 using doowiki.application.Documents.Queries.GetDocument;
 using doowiki.infrastructure.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace doowiki.api.Endpoints
 {

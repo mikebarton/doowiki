@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doowiki.api", "doowiki.api\doowiki.api.csproj", "{356C69E0-12C3-4989-A482-B5FAA7636701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doowiki.domain", "doowiki.domain\doowiki.domain.csproj", "{F81D91EA-AB15-4FC7-825D-D215FBA82FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "doowiki.domain", "doowiki.domain\doowiki.domain.csproj", "{F81D91EA-AB15-4FC7-825D-D215FBA82FD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doowiki.application", "doowiki.application\doowiki.application.csproj", "{44E7141B-35B8-459D-A89A-707161B1134B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "doowiki.application", "doowiki.application\doowiki.application.csproj", "{44E7141B-35B8-459D-A89A-707161B1134B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doowiki.infrastructure", "doowiki.infrastructure\doowiki.infrastructure.csproj", "{2CDC292C-45CC-4D68-83FA-CF200D463165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "doowiki.infrastructure", "doowiki.infrastructure\doowiki.infrastructure.csproj", "{2CDC292C-45CC-4D68-83FA-CF200D463165}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doowiki.web", "doowiki.web\doowiki.web.csproj", "{7335E17A-C35C-4769-A9E9-5448931B0B77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{356C69E0-12C3-4989-A482-B5FAA7636701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{356C69E0-12C3-4989-A482-B5FAA7636701}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{356C69E0-12C3-4989-A482-B5FAA7636701}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{356C69E0-12C3-4989-A482-B5FAA7636701}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F81D91EA-AB15-4FC7-825D-D215FBA82FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F81D91EA-AB15-4FC7-825D-D215FBA82FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F81D91EA-AB15-4FC7-825D-D215FBA82FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{2CDC292C-45CC-4D68-83FA-CF200D463165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CDC292C-45CC-4D68-83FA-CF200D463165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CDC292C-45CC-4D68-83FA-CF200D463165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7335E17A-C35C-4769-A9E9-5448931B0B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7335E17A-C35C-4769-A9E9-5448931B0B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7335E17A-C35C-4769-A9E9-5448931B0B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7335E17A-C35C-4769-A9E9-5448931B0B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,9 @@ using doowiki.infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using ZymLabs.NSwag.FluentValidation;
 
 namespace doowiki.api
@@ -36,6 +39,10 @@ namespace doowiki.api
             services.AddEndpointsApiExplorer();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
+            services.AddSpaStaticFiles(configuration => {
+                configuration.RootPath = "ClientApp/build";
+                
+            });
             //services.AddAuthorization(options =>
             //{
             //    options.FallbackPolicy = new AuthorizationPolicyBuilder()

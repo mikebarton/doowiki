@@ -3,6 +3,10 @@ using doowiki.application.Documents.Queries.GetDocument;
 using doowiki.application.Documents.Commands.SaveDocument;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System;
 
 namespace doowiki.api.Endpoints
 {

@@ -1,4 +1,6 @@
-﻿namespace doowiki.api.Infrastructure
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace doowiki.api.Infrastructure
 {
     public abstract class EndpointGroupBase
     {
