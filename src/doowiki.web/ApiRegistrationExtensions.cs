@@ -39,10 +39,13 @@ namespace doowiki.api
             services.AddEndpointsApiExplorer();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            services.AddSpaStaticFiles(configuration => {
+            services.AddSpaStaticFiles(configuration =>
+            {                
                 configuration.RootPath = "ClientApp/build";
-                
+
             });
+
+
             //services.AddAuthorization(options =>
             //{
             //    options.FallbackPolicy = new AuthorizationPolicyBuilder()

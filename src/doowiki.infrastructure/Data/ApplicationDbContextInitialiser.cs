@@ -79,6 +79,11 @@ namespace doowiki.infrastructure.Data
                 await _roleManager.CreateAsync(administratorRole);
             }
 
+            if(!_context.Spaces.Any(x=> x.Name == "Default"))
+            {
+                await _context.Spaces.AddAsync(new Space { Name = "Default" });
+            }
+
             // Default users
             var administrator = new AppUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
 
@@ -98,19 +103,7 @@ namespace doowiki.infrastructure.Data
                 };
                 _context.Users.Add(wikiUser);
                 await _context.SaveChangesAsync();
-            }
-            //else
-            //{
-            //    var adminUser = await _userManager.FindByEmailAsync("administrator@localhost");
-            //    var wikiUser = new WikiUser
-            //    {
-            //        FirstName = "Mike",
-            //        LastName = "Barton",
-            //        IdentityUserId = adminUser.Id
-            //    };
-            //    _context.Users.Add(wikiUser);
-            //    await _context.SaveChangesAsync();
-            //}            
+            }            
         }
     }
 }
