@@ -7,10 +7,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>d38e86b5-005f-4e27-b3e8-292d962e6a32</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="ClientApp\src\api\useAccounts.ts" />
-  </ItemGroup>
+  
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -22,8 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.6.2" />
   </ItemGroup>
 
@@ -33,7 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\api\useAccounts.ts" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
+    <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
+
+  
 
 </Project>

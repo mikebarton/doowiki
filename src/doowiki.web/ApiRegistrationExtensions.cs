@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using ZymLabs.NSwag.FluentValidation;
+using Microsoft.AspNetCore.OpenApi;
 
 namespace doowiki.api
 {
@@ -21,8 +22,6 @@ namespace doowiki.api
             services.AddScoped<IUser, CurrentUser>();
             services.AddHttpContextAccessor();
             services.AddExceptionHandler<CustomExceptionHandler>();
-
-            //services.AddRazorPages();
 
             services.AddScoped(provider =>
             {
@@ -37,6 +36,8 @@ namespace doowiki.api
                 options.SuppressModelStateInvalidFilter = true);
 
             services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             services.AddSpaStaticFiles(configuration =>
@@ -53,18 +54,18 @@ namespace doowiki.api
             //        .Build();
             //});
 
-            services.AddOpenApiDocument((configure, sp) =>
-            {
-                configure.Title = "DooWiki API";
+            //services.AddOpenApiDocument((configure, sp) =>
+            //{
+            //    configure.Title = "DooWiki API";
 
-                // Add the fluent validations schema processor
-                var fluentValidationSchemaProcessor =
-                    sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
+            //    // Add the fluent validations schema processor
+            //    var fluentValidationSchemaProcessor =
+            //        sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
 
-                // BUG: SchemaProcessors is missing in NSwag 14 (https://github.com/RicoSuter/NSwag/issues/4524#issuecomment-1811897079)
-                // configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
+            //    // BUG: SchemaProcessors is missing in NSwag 14 (https://github.com/RicoSuter/NSwag/issues/4524#issuecomment-1811897079)
+            //    // configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
 
-            });
+            //});
 
             return services;
         }

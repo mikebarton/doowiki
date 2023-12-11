@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Builder;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using Microsoft.AspNetCore.Http;
 
 namespace doowiki.api
 {
@@ -23,7 +25,6 @@ namespace doowiki.api
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddWebServices();
 
-
             //builder.Services.ConfigureApplicationCookie(options =>
             //{
             //    // Cookie settings
@@ -34,20 +35,14 @@ namespace doowiki.api
             //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             //    options.SlidingExpiration = true;
             //});
-
-
-            
-            //builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();            
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
                 await app.InitialiseDatabaseAsync();
             }
             else
@@ -55,17 +50,10 @@ namespace doowiki.api
                 app.UseHsts();
             }
 
-
-
             app.UseHttpsRedirection();
-
-            //app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.MapControllers();
-            app.MapEndpoints();
-
+            app.MapEndpoints();            
             app.Run();
         }
     }

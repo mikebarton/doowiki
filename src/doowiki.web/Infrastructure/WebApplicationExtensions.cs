@@ -12,10 +12,10 @@ namespace doowiki.api.Infrastructure
         public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
         {
             var groupName = group.GetType().Name;
-
+            
             return app
                 .MapGroup($"/api/{groupName}")
-                .WithGroupName(groupName)
+                //.WithGroupName(groupName)
                 .WithTags(groupName)
                 .WithOpenApi();
         }

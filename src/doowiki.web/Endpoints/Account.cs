@@ -13,6 +13,7 @@ namespace doowiki.api.Endpoints
     {
         public override void Map(WebApplication app)
         {
+            
             app.MapGroup(this)            
                 .MapPost(Login, "login")
                 .MapPost(Logout, "logout");
