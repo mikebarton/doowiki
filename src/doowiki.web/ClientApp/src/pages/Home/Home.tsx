@@ -1,8 +1,8 @@
-﻿import useWikiApi, { ISpace, WikiApi } from "../../api/useWikiApi"
+﻿import useWikiApi, { WikiApi, ISpaceDto } from "../../api/useWikiApi";
 import { useEffect, useState } from 'react';
 
 export default function () {
-    const [spaces, setSpaces] = useState<ISpace[]>([])
+    const [spaces, setSpaces] = useState<ISpaceDto[]>([])
     const wikiApi = useWikiApi();
     useEffect(() => {
         const getSpaces = async () => {
@@ -16,7 +16,7 @@ export default function () {
         <h1>home</h1>
 
         <div>{spaces.map(s => {
-            return <h1>{s.Name}</h1>
+            return <h1>{s.name}</h1>
         })}</div>
     </>
     )

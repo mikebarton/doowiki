@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Spaces.Queries.GetSpacesList
 {
-    internal class GetSpacesHandler : IRequestHandler<GetSpacesListRequest, SpacesListDto>
+    internal class GetSpacesHandler : IRequestHandler<GetSpacesListRequest, SpaceDto[]>
     {
         private readonly IApplicationDbContext _context;
 
@@ -18,10 +18,10 @@ namespace doowiki.application.Spaces.Queries.GetSpacesList
             _context = context;
         }
 
-        public async Task<SpacesListDto> Handle(GetSpacesListRequest request, CancellationToken cancellationToken)
+        public async Task<SpaceDto[]> Handle(GetSpacesListRequest request, CancellationToken cancellationToken)
         {
             var spaces = await _context.Spaces.Select(x => new SpaceDto(x.SpaceId, x.Name)).ToListAsync();
-            return new SpacesListDto(spaces);
+            return spaces.ToArray();
         }
     }
 }

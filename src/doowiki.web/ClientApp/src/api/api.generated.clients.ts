@@ -100,7 +100,7 @@ export interface IApiClient {
 
     spacePost(command: SaveSpaceCommand): Promise<void>;
 
-    spaceGet(): Promise<SpacesListDto>;
+    spaceGet(): Promise<SpaceDto[]>;
 }
 
 export class ApiClient implements IApiClient {
@@ -219,7 +219,7 @@ export class ApiClient implements IApiClient {
         return Promise.resolve<void>(null as any);
     }
 
-    spaceGet(): Promise<SpacesListDto> {
+    spaceGet(): Promise<SpaceDto[]> {
         let url_ = this.baseUrl + "/api/Space";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -235,7 +235,7 @@ export class ApiClient implements IApiClient {
         });
     }
 
-    protected processSpaceGet(response: Response): Promise<SpacesListDto> {
+    protected processSpaceGet(response: Response): Promise<SpaceDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         let _mappings: { source: any, target: any }[] = [];
@@ -243,7 +243,14 @@ export class ApiClient implements IApiClient {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
-            result200 = SpacesListDto.fromJS(resultData200, _mappings);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SpaceDto.fromJS(item, _mappings));
+            }
+            else {
+                result200 = <any>null;
+            }
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -251,7 +258,7 @@ export class ApiClient implements IApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<SpacesListDto>(null as any);
+        return Promise.resolve<SpaceDto[]>(null as any);
     }
 }
 
@@ -433,48 +440,6 @@ export class SaveSpaceCommand implements ISaveSpaceCommand {
 export interface ISaveSpaceCommand {
     spaceId: string | undefined;
     name: string;
-}
-
-export class SpacesListDto implements ISpacesListDto {
-    spaces!: SpaceDto[];
-
-    constructor(data?: ISpacesListDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            if (Array.isArray(_data["spaces"])) {
-                this.spaces = [] as any;
-                for (let item of _data["spaces"])
-                    this.spaces!.push(SpaceDto.fromJS(item, _mappings));
-            }
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): SpacesListDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<SpacesListDto>(data, _mappings, SpacesListDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.spaces)) {
-            data["spaces"] = [];
-            for (let item of this.spaces)
-                data["spaces"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface ISpacesListDto {
-    spaces: SpaceDto[];
 }
 
 export class SpaceDto implements ISpaceDto {

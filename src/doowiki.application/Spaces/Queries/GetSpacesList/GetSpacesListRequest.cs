@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using doowiki.application.Common.Security;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Spaces.Queries.GetSpacesList
 {
-    public class GetSpacesListRequest : IRequest<SpacesListDto>
+    [Authorize]
+    public class GetSpacesListRequest : IRequest<SpaceDto[]>
     {
     }
 }

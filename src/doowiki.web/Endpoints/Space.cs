@@ -24,7 +24,7 @@ namespace doowiki.api.Endpoints
             return Results.Ok();
         }
 
-        public async Task<SpacesListDto> GetSpaces(ISender sender)
+        public async Task<SpaceDto[]> GetSpaces(ISender sender)
         {
             var spaces = await sender.Send(new GetSpacesListRequest());
             return spaces;

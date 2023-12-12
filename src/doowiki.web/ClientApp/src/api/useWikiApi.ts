@@ -1,26 +1,16 @@
-﻿export interface WikiApi {
-    GetSpaces: () => Promise<ISpace[]>
+﻿import { ApiClient, ISpaceDto } from "./api.generated.clients";
+
+export interface WikiApi {
+    GetSpaces: () => Promise<ISpaceDto[]>
 }
 
-export interface ISpace {
-    SpaceId: string,
-    Name: string
-}
 
 export default function (): WikiApi {
-    const getSpaces = async () : Promise<ISpace[]> => {
-        const spacesRes = await fetch('/api/space',
-            {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
+    const client = new ApiClient();
 
-        var body = await spacesRes.json();
-
-        if (spacesRes.status != 200)
-            throw new Error('error retrieving spaces - ' + body.toLocaleString());
-
-        return body as ISpace[]
+    const getSpaces = async () : Promise<ISpaceDto[]> => {        
+        var spaces = await client.spaceGet();
+        return spaces;
     }
 
     return {
@@ -28,3 +18,4 @@ export default function (): WikiApi {
     } as WikiApi;
 }
 
+export type { ISpaceDto };
