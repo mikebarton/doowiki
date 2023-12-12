@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System;
+using doowiki.application.Documents.Queries.GetDocumentList;
+using doowiki.application.Common.Models;
 
 namespace doowiki.api.Endpoints
 {
@@ -16,7 +18,8 @@ namespace doowiki.api.Endpoints
         {
             app.MapGroup(this)            
                 .MapPost(SaveDocument)
-                .MapGet(GetDocument, "{id}");
+                .MapGet(GetDocument, "{id}")
+                .MapGet(GetDocumentList, "list/{spaceId}");
         }
 
         public async Task<IResult> SaveDocument(ISender sender, SaveDocumentCommand command)
@@ -30,6 +33,15 @@ namespace doowiki.api.Endpoints
             if (id == Guid.Empty) return null;
             var document = await sender.Send(new GetDocumentRequest() { DocumentId = id });
             return document;
+        }
+
+        public async Task<DocumentMetaDto[]> GetDocumentList(ISender sender, Guid SpaceId)
+        {
+            if (SpaceId == Guid.Empty)
+                return null;
+
+            var docs = await sender.Send(new GetDocumentListRequest { SpaceId = SpaceId});
+            return docs;
         }
     }
 }

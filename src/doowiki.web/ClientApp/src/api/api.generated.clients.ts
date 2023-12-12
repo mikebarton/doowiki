@@ -262,6 +262,67 @@ export class ApiClient implements IApiClient {
     }
 }
 
+export interface IDocumentClient {
+
+    list(spaceId: string): Promise<DocumentMetaDto[]>;
+}
+
+export class DocumentClient implements IDocumentClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    list(spaceId: string): Promise<DocumentMetaDto[]> {
+        let url_ = this.baseUrl + "/api/Document/list/{spaceId}";
+        if (spaceId === undefined || spaceId === null)
+            throw new Error("The parameter 'spaceId' must be defined.");
+        url_ = url_.replace("{spaceId}", encodeURIComponent("" + spaceId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processList(_response);
+        });
+    }
+
+    protected processList(response: Response): Promise<DocumentMetaDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(DocumentMetaDto.fromJS(item, _mappings));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<DocumentMetaDto[]>(null as any);
+    }
+}
+
 export class LoginDto implements ILoginDto {
     email!: string;
     password!: string;
@@ -402,6 +463,56 @@ export interface IDocumentDto {
     updatedOn: moment.Moment;
     authorName: string;
     content: string;
+}
+
+export class DocumentMetaDto implements IDocumentMetaDto {
+    documentId!: string;
+    name!: string;
+    createdOn!: moment.Moment;
+    updatedOn!: moment.Moment;
+    authorName!: string;
+
+    constructor(data?: IDocumentMetaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any, _mappings?: any) {
+        if (_data) {
+            this.documentId = _data["documentId"];
+            this.name = _data["name"];
+            this.createdOn = _data["createdOn"] ? moment.parseZone(_data["createdOn"].toString()) : <any>undefined;
+            this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
+            this.authorName = _data["authorName"];
+        }
+    }
+
+    static fromJS(data: any, _mappings?: any): DocumentMetaDto | null {
+        data = typeof data === 'object' ? data : {};
+        return createInstance<DocumentMetaDto>(data, _mappings, DocumentMetaDto);
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentId"] = this.documentId;
+        data["name"] = this.name;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString(true) : <any>undefined;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
+        data["authorName"] = this.authorName;
+        return data;
+    }
+}
+
+export interface IDocumentMetaDto {
+    documentId: string;
+    name: string;
+    createdOn: moment.Moment;
+    updatedOn: moment.Moment;
+    authorName: string;
 }
 
 export class SaveSpaceCommand implements ISaveSpaceCommand {
