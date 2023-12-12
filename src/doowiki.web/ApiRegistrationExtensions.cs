@@ -55,6 +55,7 @@ namespace doowiki.api
             services.AddOpenApiDocument((configure, sp) =>
             {
                 configure.Title = "DooWiki API";
+                configure.Version = "v1";
 
                 // Add the fluent validations schema processor
                 var fluentValidationSchemaProcessor =
