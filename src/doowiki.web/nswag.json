@@ -1,6 +1,6 @@
 ﻿{
   "runtime": "Net80",
-  "defaultVariables": "CSharpOutputPath=..\\Client.CSharp",
+  "defaultVariables": "TypescriptOutputPath=./ClientApp/src/api",
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
       "project": "doowiki.web.csproj",
@@ -61,12 +61,12 @@
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 2.7,
-      "template": "Angular",
+      "template": "Fetch",
       "promiseType": "Promise",
       "httpClass": "HttpClient",
       "useSingletonProvider": false,
       "injectionTokenType": "InjectionToken",
-      "rxJsVersion": 6.0,
+      //"rxJsVersion": 6.0,
       "dateTimeType": "OffsetMomentJS",
       "nullValue": "Undefined",
       "generateClientClasses": true,
