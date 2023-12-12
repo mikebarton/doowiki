@@ -85,7 +85,7 @@
       "useTransformOptionsMethod": false,
       "useTransformResultMethod": false,
       "generateDtoTypes": true,
-      "operationGenerationMode": "MultipleClientsFromPathSegments",
+      "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "markOptionalProperties": false,
       "generateCloneMethod": false,
       "typeStyle": "Class",

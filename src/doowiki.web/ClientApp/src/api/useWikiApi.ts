@@ -1,4 +1,4 @@
-﻿import { ApiClient, ISpaceDto, IDocumentDto, IDocumentMetaDto, DocumentClient } from "./api.generated.clients";
+﻿import { SpaceClient, ISpaceDto, IDocumentMetaDto, DocumentClient } from "./api.generated.clients";
 
 export interface WikiApi {
     GetSpaces: () => Promise<ISpaceDto[]>
@@ -7,11 +7,11 @@ export interface WikiApi {
 
 
 export default function (): WikiApi {
-    const client = new ApiClient();
+    const spaceclient = new SpaceClient();
     const docClient = new DocumentClient();
 
     const getSpaces = async () : Promise<ISpaceDto[]> => {        
-        var spaces = await client.spaceGet();
+        var spaces = await spaceclient.spaceGet();
         return spaces;
     }
 
