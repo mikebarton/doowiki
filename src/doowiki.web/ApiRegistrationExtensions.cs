@@ -37,7 +37,13 @@ namespace doowiki.api
             services.AddEndpointsApiExplorer();
             //services.AddSwaggerGen();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/denied";
+                options.LoginPath = "/login";
+                options.LogoutPath = "/logout";
+
+            });
 
             services.AddSpaStaticFiles(configuration =>
             {                

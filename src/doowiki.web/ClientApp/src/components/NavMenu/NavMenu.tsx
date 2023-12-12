@@ -1,5 +1,15 @@
-﻿
+﻿import SpaceSelector from "../SpaceSelector/SpaceSelector";
+import LogoutButton from "../LogoutButton/LogoutButton";
 
-export default function () {
 
+const NavMenu = () => {
+    
+    return (
+        <>
+            <SpaceSelector/>
+            <LogoutButton/>
+        </>
+    )
 }
+
+export default NavMenu;

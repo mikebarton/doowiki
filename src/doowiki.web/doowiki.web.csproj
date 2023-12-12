@@ -40,6 +40,10 @@
     <ProjectReference Include="..\doowiki.infrastructure\doowiki.infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ClientApp\src\styles\themes\" />
+  </ItemGroup>
+
 	<PropertyGroup>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 	</PropertyGroup>

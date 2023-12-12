@@ -25,7 +25,7 @@ export default function () {
                     <TextField.Input value={email} onChange={e => setEmail(e.target.value)} />                    
 
                     <Text>Password:</Text>
-                    <TextField.Input value={password} onChange={e => setPassword(e.target.value)} />
+                <TextField.Input value={password} type={'password'} onChange={e => setPassword(e.target.value)} />
             </Grid>
             <Button variant='surface' onClick={onLogin}>Login</Button>
         </Card>
