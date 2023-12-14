@@ -13,13 +13,13 @@ function App() {
         <div id="container">
             <GlobalContextProvider defaultSpaceId={undefined} defaultUserId={undefined}>
                 <BrowserRouter>
-                    <Routes>
+                    <Routes>        
                         <Route path="/" element={<Layout />}>
                             <Route index element={<Login />} />
-                        </Route>
+                        </Route>                
                         <Route path={'/Home'} element={<NavMenuLayout />} >
-                            <Route index element={<Home />} />
-                        </Route>
+                            <Route path="*" element={<Home />} />
+                        </Route>                        
                     </Routes>
                 </BrowserRouter>
             </GlobalContextProvider>

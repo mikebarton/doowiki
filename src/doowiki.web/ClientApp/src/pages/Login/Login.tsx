@@ -11,23 +11,34 @@ export default function () {
     const accounts = useAccounts();
     const navigate = useNavigate();
 
-    const onLogin = async () => {
-        const loggedIn = await accounts.Login(email, password);
-        if (loggedIn) {
-            navigate('/home');
+    const onLogin = () => {
+        async function doLogin(){
+            const loggedIn = await accounts.Login(email, password);
+            if (loggedIn) {
+                navigate('/home');
+            }
         }
+        doLogin();
+    }
+
+    const onFormSubmit = (e:any)=>{
+        onLogin();
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     return (
         <Card style={{ maxWidth: 400 }}>
-            <Grid columns={'2'} gap={'3'} width={'auto'}>
-                    <Text>Email:</Text>
-                    <TextField.Input value={email} onChange={e => setEmail(e.target.value)} />                    
+            <form onSubmit={onFormSubmit}>
+                <Grid columns={'2'} gap={'3'} width={'auto'}>
+                        <Text>Email:</Text>
+                        <TextField.Input value={email} onChange={e => setEmail(e.target.value)} />                    
 
-                    <Text>Password:</Text>
-                <TextField.Input value={password} type={'password'} onChange={e => setPassword(e.target.value)} />
-            </Grid>
-            <Button variant='surface' onClick={onLogin}>Login</Button>
+                        <Text>Password:</Text>
+                    <TextField.Input value={password} type={'password'} onChange={e => setPassword(e.target.value)} />
+                </Grid>
+                <Button variant='surface' type='submit'>Login</Button>
+            </form>
         </Card>
     )
 }
