@@ -5,7 +5,7 @@ import NavMenu from "../components/NavMenu/NavMenu";
 const NavMenuLayout = () => {
     const styles = {
         navStyle: {
-            width: '200px'
+            width: '300px'
         }
     }
 
@@ -14,9 +14,13 @@ const NavMenuLayout = () => {
             <Flex direction={'column'} justify={'start'} align={'stretch'} style={styles.navStyle} gap={'3'} m={'3'}>
                 <NavMenu/>
             </Flex>
-            <Box width={"100%"} height={"100%" }>
+            <Flex direction={'column'} justify={'start'} align={'stretch'}>
+                <Box width={"100%"} >
+                    <h1>Doowiki</h1>
+                </Box>
                 <Outlet/>
-            </Box>
+            </Flex>
+            
         </Flex>
     )
 }

@@ -1,8 +1,9 @@
-﻿import { SpaceClient, ISpaceDto, IDocumentMetaDto, DocumentClient } from "./api.generated.clients";
+﻿import { SpaceClient, ISpaceDto, IDocumentMetaDto, DocumentClient, IDocumentDto } from "./api.generated.clients";
 
 export interface WikiApi {
-    GetSpaces: () => Promise<ISpaceDto[]>
-    GetDocumentList: (SpaceId: string) => Promise<IDocumentMetaDto[]>
+    GetSpaces: () => Promise<ISpaceDto[]>,
+    GetDocumentList: (SpaceId: string) => Promise<IDocumentMetaDto[]>,
+    GetDocument: (DocumentId: string) => Promise<IDocumentDto>
 }
 
 
@@ -21,9 +22,16 @@ export default function (): WikiApi {
         return docs;
     }
 
+    const getDocument = async (documentId: string) : Promise<IDocumentDto>=>
+    {
+        var doc = await docClient.documentGet(documentId);
+        return doc;
+    }
+
     return {
         GetSpaces: getSpaces,
-        GetDocumentList: getDocuments
+        GetDocumentList: getDocuments,
+        GetDocument: getDocument
     } as WikiApi;
 }
 

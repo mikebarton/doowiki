@@ -1,8 +1,15 @@
-﻿
+﻿import DocumentView from "../../components/DocumentView/DocumentView";
+import { useParams } from "react-router-dom";
+
+interface IHomeProps{
+    DocumentId: string | undefined,
+    IsEdit: boolean
+}
 export default function () {
+    const { id } = useParams();
     
     return (<>
-        <h1>home</h1>
+        { id && <DocumentView DocumentId={id}/> }
 
         
     </>

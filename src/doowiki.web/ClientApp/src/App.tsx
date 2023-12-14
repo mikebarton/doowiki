@@ -18,6 +18,7 @@ function App() {
                             <Route index element={<Login />} />
                         </Route>                
                         <Route path={'/Home'} element={<NavMenuLayout />} >
+                            <Route path={':id'} element={<Home/>}/>
                             <Route path="*" element={<Home />} />
                         </Route>                        
                     </Routes>

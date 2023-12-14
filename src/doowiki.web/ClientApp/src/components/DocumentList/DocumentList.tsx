@@ -1,6 +1,7 @@
 import React from 'react';
 import { SpaceContext } from "../../utils/GlobalContextProvider";
 import useWikiApi, { WikiApi, IDocumentMetaDto } from "../../api/useWikiApi";
+import { Link } from 'react-router-dom';
 
 const DocumentList = () => {
     const wikiApi = useWikiApi();
@@ -22,7 +23,7 @@ const DocumentList = () => {
     return (
         <>
             {documents.map(x=>{
-                return <p>{x.name}</p>
+                return <Link to={'/home/' + x.documentId}>{x.name}</Link>
             })}
         </>
     )
