@@ -15,5 +15,6 @@ namespace doowiki.application.Documents.Queries.GetDocument
         public DateTimeOffset UpdatedOn { get; set; }
         public string AuthorName { get; set; }
         public string Content { get; set; }
+        public Guid SpaceId { get; set; }
     }
 }

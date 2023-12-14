@@ -45,6 +45,7 @@ namespace doowiki.application.Documents.Commands.SaveDocument
                 {
                     documentMetaData.Content = new DocumentContent();
                 }
+                _applicationDbContext.Documents.Add(documentMetaData);
             }
 
             documentMetaData.SpaceId = request.SpaceId == Guid.Empty ? _defaultSpace : request.SpaceId;            
@@ -57,8 +58,7 @@ namespace doowiki.application.Documents.Commands.SaveDocument
             {
                 documentMetaData.Parent = await _applicationDbContext.Documents.FirstAsync(x=>x.DocumentId == request.ParentId);
             }
-
-            _applicationDbContext.Documents.Add(documentMetaData);
+            
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
             return documentMetaData.DocumentId;

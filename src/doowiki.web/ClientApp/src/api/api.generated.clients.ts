@@ -418,6 +418,7 @@ export class DocumentDto implements IDocumentDto {
     updatedOn!: moment.Moment;
     authorName!: string;
     content!: string;
+    spaceId!: string;
 
     constructor(data?: IDocumentDto) {
         if (data) {
@@ -436,6 +437,7 @@ export class DocumentDto implements IDocumentDto {
             this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
             this.authorName = _data["authorName"];
             this.content = _data["content"];
+            this.spaceId = _data["spaceId"];
         }
     }
 
@@ -452,6 +454,7 @@ export class DocumentDto implements IDocumentDto {
         data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
         data["authorName"] = this.authorName;
         data["content"] = this.content;
+        data["spaceId"] = this.spaceId;
         return data;
     }
 }
@@ -463,6 +466,7 @@ export interface IDocumentDto {
     updatedOn: moment.Moment;
     authorName: string;
     content: string;
+    spaceId: string;
 }
 
 export class DocumentMetaDto implements IDocumentMetaDto {

@@ -6,6 +6,9 @@ const NavMenuLayout = () => {
     const styles = {
         navStyle: {
             width: '300px'
+        },
+        contentStyle: {
+            width: '100%'
         }
     }
 
@@ -14,11 +17,11 @@ const NavMenuLayout = () => {
             <Flex direction={'column'} justify={'start'} align={'stretch'} style={styles.navStyle} gap={'3'} m={'3'}>
                 <NavMenu/>
             </Flex>
-            <Flex direction={'column'} justify={'start'} align={'stretch'}>
+            <Flex direction={'column'} justify={'start'} align={'stretch'} style={styles.contentStyle}>
                 <Box width={"100%"} >
                     <h1>Doowiki</h1>
                 </Box>
-                <Outlet/>
+                <Box width={'100%'} ><Outlet /></Box>
             </Flex>
             
         </Flex>

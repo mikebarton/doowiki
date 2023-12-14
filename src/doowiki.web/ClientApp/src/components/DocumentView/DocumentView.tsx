@@ -1,7 +1,9 @@
 import React from 'react';
 import useWikiApi from '../../api/useWikiApi';
 import { IDocumentDto } from '../../api/api.generated.clients';
-import { Flex, TextField, TextArea, Text } from '@radix-ui/themes';
+import { Flex, TextField, TextArea, Text, Em, Heading, IconButton } from '@radix-ui/themes';
+import { Pencil1Icon } from '@radix-ui/react-icons'
+import { useNavigate } from 'react-router-dom';
 
 interface IDocumentViewProps{
     DocumentId: string,
@@ -10,6 +12,8 @@ interface IDocumentViewProps{
 const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
     const wikiApi = useWikiApi();
     const [document, setDocument] = React.useState<IDocumentDto>();
+    const navigate = useNavigate();
+
     React.useEffect(()=>{
         async function getDocument(){
             const doc = await wikiApi.GetDocument(DocumentId);
@@ -18,11 +22,18 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
         getDocument();
     },[DocumentId])
 
+    function onEdit(){
+        navigate(`/edit/${DocumentId}`)
+    }
+
     return (
         <>
             <Flex direction={'column'} justify={'start'} align={'stretch'}>
-                <Text>{document?.name}</Text>
-                <Text>{document?.authorName}</Text>
+                <Flex align={'center'}><Heading>{document?.name}</Heading><IconButton ml={'1'} variant='ghost' onClick={onEdit}><Pencil1Icon/></IconButton></Flex>
+                <Flex mb={'5'}>
+                    <Em>Created By:</Em>
+                    <Text ml={'1'}>{document?.authorName}</Text>
+                </Flex>
                 <Text>{document?.content}</Text>
             </Flex>
         </>

@@ -34,7 +34,8 @@ namespace doowiki.application.Documents.Queries.GetDocument
                 Name = document.Name,
                 UpdatedOn = document.UpdatedOn,
                 DocumentId = document.DocumentId,
-                Content = document.Content.DocumentMarkup
+                Content = document.Content.DocumentMarkup,
+                SpaceId = document.SpaceId
             };
 
             return result;
