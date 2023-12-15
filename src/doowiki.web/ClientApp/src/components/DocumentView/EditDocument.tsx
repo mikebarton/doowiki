@@ -4,22 +4,34 @@ import { IDocumentDto } from '../../api/api.generated.clients';
 import { Flex, TextField, TextArea, Text, Em, IconButton } from '@radix-ui/themes';
 import { DiscIcon } from '@radix-ui/react-icons';
 import { ISpaceContext, SpaceContext } from '../../utils/GlobalContextProvider';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 interface IEditDocumentProps {
-    DocumentId: string,
+    DocumentId: string | undefined,
 }
 
 const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     const wikiApi = useWikiApi();
     const [document, setDocument] = React.useState<IDocumentDto>();
     const {SpaceId, SetSpaceId} = React.useContext<ISpaceContext>(SpaceContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    
 
     React.useEffect(() => {
         async function getDocument() {
-            const doc = await wikiApi.GetDocument(DocumentId);
+            const doc = await wikiApi.GetDocument(DocumentId!);
             setDocument(doc);
         }
-        getDocument();
+        function initDocument(){
+            const doc = {
+                spaceId: SpaceId                             
+            } as IDocumentDto;
+            setDocument(doc);
+        }
+        if(DocumentId)
+            getDocument();
+        else 
+            initDocument();
     }, [DocumentId]);
 
     function onSave(){
@@ -28,7 +40,8 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
                 name: document?.name,
                 content: document?.content,
                 documentId: document?.documentId,
-                spaceId: document?.spaceId ?? SpaceId                
+                spaceId: document?.spaceId ?? SpaceId,
+                parentId: searchParams.get('parentId')           
             } as SaveDocumentCommand
             await wikiApi.SaveDocument(args);
         }

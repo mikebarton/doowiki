@@ -23,6 +23,7 @@ function App() {
                             <Route path="*" element={<Home />} />
                         </Route>   
                         <Route path='Edit' element={<NavMenuLayout/>}>
+                            <Route index element={<Edit/>}/>
                             <Route path=":id" element={<Edit/>}/>    
                         </Route>                     
                     </Routes>

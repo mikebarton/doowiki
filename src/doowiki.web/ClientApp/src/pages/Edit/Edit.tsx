@@ -8,7 +8,7 @@ export default function () {
     const { id } = useParams();
     
     return (<>
-        { id && <EditDocument DocumentId={id}/> }
+        <EditDocument DocumentId={id}/>
 
         
     </>
