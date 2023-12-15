@@ -11,7 +11,7 @@ const DocumentList = () => {
     React.useEffect(()=>{
         const getDocuments = async () =>{
             if(SpaceId){
-                const newDocs = await wikiApi.GetDocumentList(SpaceId);
+                const newDocs = await wikiApi.GetDocumentTree(SpaceId);
                 if(newDocs)
                 setDocuments(newDocs);
             }

@@ -99,6 +99,8 @@ export interface IDocumentClient {
     documentGet(id: string): Promise<DocumentDto>;
 
     list(spaceId: string): Promise<DocumentMetaDto[]>;
+
+    tree(spaceId: string): Promise<DocumentTreeDto[]>;
 }
 
 export class DocumentClient implements IDocumentClient {
@@ -226,6 +228,51 @@ export class DocumentClient implements IDocumentClient {
             });
         }
         return Promise.resolve<DocumentMetaDto[]>(null as any);
+    }
+
+    tree(spaceId: string): Promise<DocumentTreeDto[]> {
+        let url_ = this.baseUrl + "/api/Document/tree/{spaceId}";
+        if (spaceId === undefined || spaceId === null)
+            throw new Error("The parameter 'spaceId' must be defined.");
+        url_ = url_.replace("{spaceId}", encodeURIComponent("" + spaceId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processTree(_response);
+        });
+    }
+
+    protected processTree(response: Response): Promise<DocumentTreeDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(DocumentTreeDto.fromJS(item, _mappings));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<DocumentTreeDto[]>(null as any);
     }
 }
 
@@ -517,6 +564,72 @@ export interface IDocumentMetaDto {
     createdOn: moment.Moment;
     updatedOn: moment.Moment;
     authorName: string;
+}
+
+export class DocumentTreeDto implements IDocumentTreeDto {
+    documentId!: string;
+    name!: string;
+    createdOn!: moment.Moment;
+    updatedOn!: moment.Moment;
+    authorName!: string;
+    parentId!: string | undefined;
+    children!: DocumentTreeDto[];
+
+    constructor(data?: IDocumentTreeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any, _mappings?: any) {
+        if (_data) {
+            this.documentId = _data["documentId"];
+            this.name = _data["name"];
+            this.createdOn = _data["createdOn"] ? moment.parseZone(_data["createdOn"].toString()) : <any>undefined;
+            this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
+            this.authorName = _data["authorName"];
+            this.parentId = _data["parentId"];
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children!.push(DocumentTreeDto.fromJS(item, _mappings));
+            }
+        }
+    }
+
+    static fromJS(data: any, _mappings?: any): DocumentTreeDto | null {
+        data = typeof data === 'object' ? data : {};
+        return createInstance<DocumentTreeDto>(data, _mappings, DocumentTreeDto);
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentId"] = this.documentId;
+        data["name"] = this.name;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString(true) : <any>undefined;
+        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
+        data["authorName"] = this.authorName;
+        data["parentId"] = this.parentId;
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IDocumentTreeDto {
+    documentId: string;
+    name: string;
+    createdOn: moment.Moment;
+    updatedOn: moment.Moment;
+    authorName: string;
+    parentId: string | undefined;
+    children: DocumentTreeDto[];
 }
 
 export class SaveSpaceCommand implements ISaveSpaceCommand {

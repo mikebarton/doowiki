@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System;
 using doowiki.application.Documents.Queries.GetDocumentList;
 using doowiki.application.Common.Models;
+using doowiki.application.Documents.Queries.GetDocumentTree;
 
 namespace doowiki.api.Endpoints
 {
@@ -19,7 +20,8 @@ namespace doowiki.api.Endpoints
             app.MapGroup(this)            
                 .MapPost(SaveDocument)
                 .MapGet(GetDocument, "{id}")
-                .MapGet(GetDocumentList, "list/{spaceId}");
+                .MapGet(GetDocumentList, "list/{spaceId}")
+                .MapGet(GetDocumentTree, "tree/{spaceId}");
         }
 
         public async Task<IResult> SaveDocument(ISender sender, SaveDocumentCommand command)
@@ -41,6 +43,15 @@ namespace doowiki.api.Endpoints
                 return null;
 
             var docs = await sender.Send(new GetDocumentListRequest { SpaceId = SpaceId});
+            return docs;
+        }
+
+        public async Task<DocumentTreeDto[]> GetDocumentTree(ISender sender, Guid SpaceId)
+        {
+            if (SpaceId == Guid.Empty)
+                return null;
+
+            var docs = await sender.Send(new GetDocumentTreeRequest { SpaceId = SpaceId });
             return docs;
         }
     }
