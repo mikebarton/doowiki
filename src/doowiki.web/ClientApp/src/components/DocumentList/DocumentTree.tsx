@@ -1,6 +1,6 @@
 import React from 'react';
 import { SpaceContext } from "../../utils/GlobalContextProvider";
-import useWikiApi, { WikiApi, DocumentTreeDto } from "../../api/useWikiApi";
+import useWikiApi, { DocumentTreeDto } from "../../api/useWikiApi";
 import { Link } from 'react-router-dom';
 import { Flex, IconButton } from '@radix-ui/themes';
 import { TriangleRightIcon } from '@radix-ui/react-icons';
@@ -11,21 +11,25 @@ interface IDocumentTreeNodeProps {
 const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    const Toggle = ()=>{
+    const Toggle = () => {
         const tranformStyles = {
             visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
-            transform: isOpen ? 'rotate(90deg)' : undefined
+            transform: isOpen ? 'rotate(90deg)' : ''
         }
 
-        return <Flex  align={'center'}><IconButton size={'1'} onClick={()=> setIsOpen(!isOpen)} style = {tranformStyles} variant='ghost'><TriangleRightIcon width={'24'} height={'24'}/></IconButton></Flex>
+        return <Flex align={'center'}>
+                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={tranformStyles} variant='ghost'>
+                        <TriangleRightIcon width={'24'} height={'24'} />
+                    </IconButton>
+                </Flex>
     }
 
-    const Children = ()=>{
-        if(!item.children || item.children.length === 0 || !isOpen)
+    const Children = () => {
+        if (!item.children || item.children.length === 0 || !isOpen)
             return <></>
 
         return <Flex direction={'column'}>
-            {item.children.map(c=><DocumentTreeNode item={c}/>)}
+            {item.children.map(c => <DocumentTreeNode item={c} />)}
         </Flex>
     }
 
@@ -34,7 +38,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
             <Toggle />
             <Flex direction={'column'}>
                 <Link to={'/home/' + item.documentId}>{item.name}</Link>
-                <Children/>
+                <Children />
             </Flex>
         </Flex>
     </>
@@ -58,7 +62,7 @@ const DocumentTree = () => {
     }, [SpaceId]);
 
 
-    return <>{documents && documents.map(d => <DocumentTreeNode item={d} />)}</>
+    return <Flex direction={'column'}>{documents && documents.map(d => <DocumentTreeNode item={d} />)}</Flex>
 
 }
 
