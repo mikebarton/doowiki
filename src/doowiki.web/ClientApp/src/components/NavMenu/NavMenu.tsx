@@ -1,6 +1,6 @@
 ﻿import SpaceSelector from "../SpaceSelector/SpaceSelector";
 import LogoutButton from "../LogoutButton/LogoutButton";
-import DocumentList from "../DocumentList/DocumentList";
+import DocumentTree from "../DocumentList/DocumentTree";
 import AddDocumentButton from "../AddDocumentButton/AddDocumentButton";
 
 
@@ -10,7 +10,7 @@ const NavMenu = () => {
         <>
             <SpaceSelector/>
             <AddDocumentButton />
-            <DocumentList/>
+            <DocumentTree/>
             <LogoutButton/>
         </>
     )

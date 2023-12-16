@@ -1,6 +1,6 @@
 import React from 'react';
 import useWikiApi, { SaveDocumentCommand} from '../../api/useWikiApi';
-import { IDocumentDto } from '../../api/api.generated.clients';
+import { DocumentDto } from '../../api/api.generated.clients';
 import { Flex, TextField, TextArea, Text, Em, IconButton } from '@radix-ui/themes';
 import { DiscIcon } from '@radix-ui/react-icons';
 import { ISpaceContext, SpaceContext } from '../../utils/GlobalContextProvider';
@@ -12,7 +12,7 @@ interface IEditDocumentProps {
 
 const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     const wikiApi = useWikiApi();
-    const [document, setDocument] = React.useState<IDocumentDto>();
+    const [document, setDocument] = React.useState<DocumentDto>();
     const {SpaceId, SetSpaceId} = React.useContext<ISpaceContext>(SpaceContext);
     const [searchParams, setSearchParams] = useSearchParams();
     
@@ -25,7 +25,7 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
         function initDocument(){
             const doc = {
                 spaceId: SpaceId                             
-            } as IDocumentDto;
+            } as DocumentDto;
             setDocument(doc);
         }
         if(DocumentId)
@@ -51,9 +51,9 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     return (
         <>
             <Flex direction={'column'} justify={'start'} align={'stretch'} width={'100%'} p={'5'} >
-                <TextField.Input value={document?.name} onChange={e => setDocument({ ...document, name: e.target.value } as IDocumentDto)} mb={'3'}/>
+                <TextField.Input value={document?.name} onChange={e => setDocument({ ...document, name: e.target.value } as DocumentDto)} mb={'3'}/>
                 <Flex align={'center'} mb={'5'}><Em>Created By:</Em>    <Text>{document?.authorName}</Text></Flex>
-                <TextArea value={document?.content} onChange={e => setDocument({ ...document, content: e.target.value } as IDocumentDto)} mb={'3'} />
+                <TextArea value={document?.content} onChange={e => setDocument({ ...document, content: e.target.value } as DocumentDto)} mb={'3'} />
                 <IconButton onClick={onSave}><DiscIcon/></IconButton>
             </Flex>
         </>

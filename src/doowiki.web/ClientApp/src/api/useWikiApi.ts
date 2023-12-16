@@ -1,10 +1,10 @@
-﻿import { SpaceClient, ISpaceDto, IDocumentMetaDto, DocumentClient, IDocumentDto, SaveDocumentCommand, IDocumentTreeDto } from "./api.generated.clients";
+﻿import { SpaceClient, SpaceDto, DocumentMetaDto, DocumentClient, DocumentDto, SaveDocumentCommand, DocumentTreeDto } from "./api.generated.clients";
 
 export interface WikiApi {
-    GetSpaces: () => Promise<ISpaceDto[]>,
-    GetDocumentList: (SpaceId: string) => Promise<IDocumentMetaDto[]>,
-    GetDocumentTree: (SpaceId: string) => Promise<IDocumentTreeDto[]>,
-    GetDocument: (DocumentId: string) => Promise<IDocumentDto>,
+    GetSpaces: () => Promise<SpaceDto[]>,
+    GetDocumentList: (SpaceId: string) => Promise<DocumentMetaDto[]>,
+    GetDocumentTree: (SpaceId: string) => Promise<DocumentTreeDto[]>,
+    GetDocument: (DocumentId: string) => Promise<DocumentDto>,
     SaveDocument: (args: SaveDocumentCommand) => Promise<boolean>
 }
 
@@ -13,24 +13,24 @@ export default function (): WikiApi {
     const spaceclient = new SpaceClient();
     const docClient = new DocumentClient();
 
-    const getSpaces = async () : Promise<ISpaceDto[]> => {        
+    const getSpaces = async () : Promise<SpaceDto[]> => {        
         var spaces = await spaceclient.spaceGet();
         return spaces;
     }
 
-    const getDocuments = async (spaceId: string): Promise<IDocumentMetaDto[]> =>
+    const getDocuments = async (spaceId: string): Promise<DocumentMetaDto[]> =>
     {
         var docs = await docClient.list(spaceId);
         return docs;
     }
 
-    const getDocumentTree = async (spaceId: string): Promise<IDocumentTreeDto[]> =>
+    const getDocumentTree = async (spaceId: string): Promise<DocumentTreeDto[]> =>
     {
         var docs = await docClient.tree(spaceId);
         return docs;
     }
 
-    const getDocument = async (documentId: string) : Promise<IDocumentDto>=>
+    const getDocument = async (documentId: string) : Promise<DocumentDto>=>
     {
         var doc = await docClient.documentGet(documentId);
         return doc;
@@ -55,4 +55,4 @@ export default function (): WikiApi {
     } as WikiApi;
 }
 
-export type { ISpaceDto, IDocumentMetaDto, SaveDocumentCommand };
+export type { SpaceDto, DocumentMetaDto, SaveDocumentCommand, DocumentTreeDto };

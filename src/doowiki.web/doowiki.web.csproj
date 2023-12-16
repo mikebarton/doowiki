@@ -6,6 +6,7 @@
     <ImplicitUsings>false</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>d38e86b5-005f-4e27-b3e8-292d962e6a32</UserSecretsId>
+	<!--<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>-->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 import React from 'react';
 import useWikiApi from '../../api/useWikiApi';
-import { IDocumentDto } from '../../api/api.generated.clients';
+import { DocumentDto } from '../../api/api.generated.clients';
 import { Flex, TextField, TextArea, Text, Em, Heading, IconButton } from '@radix-ui/themes';
 import { Pencil1Icon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ interface IDocumentViewProps{
 
 const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
     const wikiApi = useWikiApi();
-    const [document, setDocument] = React.useState<IDocumentDto>();
+    const [document, setDocument] = React.useState<DocumentDto>();
     const navigate = useNavigate();
 
     React.useEffect(()=>{

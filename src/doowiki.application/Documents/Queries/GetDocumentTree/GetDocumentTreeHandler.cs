@@ -48,7 +48,7 @@ namespace doowiki.application.Documents.Queries.GetDocumentTree
                     Name = x.Name,
                     ParentId = x.Parent?.DocumentId,
                     UpdatedOn = x.UpdatedOn,
-                    Children = getTree(list, x.Parent?.DocumentId)
+                    Children = getTree(list, x.DocumentId)
                 }).ToList();
             }
 

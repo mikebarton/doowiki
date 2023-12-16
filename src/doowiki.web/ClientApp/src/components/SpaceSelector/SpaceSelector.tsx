@@ -1,12 +1,12 @@
 import React from 'react';
-import useWikiApi, { ISpaceDto } from "../../api/useWikiApi";
+import useWikiApi, { SpaceDto } from "../../api/useWikiApi";
 import { useEffect, useState } from 'react';
 import { Select } from '@radix-ui/themes';
 import { SpaceContext } from "../../utils/GlobalContextProvider";
 
 
 const SpaceSelector = () => {
-    const [spaces, setSpaces] = useState<ISpaceDto[]>([])
+    const [spaces, setSpaces] = useState<SpaceDto[]>([])
     const wikiApi = useWikiApi();
     const spaceContext = React.useContext(SpaceContext);
 
@@ -14,7 +14,9 @@ const SpaceSelector = () => {
         const getSpaces = async () => {
             const spaces = await wikiApi.GetSpaces();
             setSpaces(spaces);
-            spaceContext.SetSpaceId(spaces[0].id)
+
+            if(spaces && spaces[0].id)
+                spaceContext.SetSpaceId(spaces[0]?.id)
         }
 
         getSpaces();
@@ -34,7 +36,7 @@ const SpaceSelector = () => {
                 <Select.Content>
                     {spaces.map(s => {
                         return (
-                            <Select.Item key={s.id} value={s.id}>{s.name}</Select.Item>
+                            <>{s && <Select.Item key={s.id} value={s.id!}>{s.name}</Select.Item>}</>
                         )
                     }) }
                 </Select.Content>

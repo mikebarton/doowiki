@@ -16,6 +16,6 @@ namespace doowiki.application.Documents.Queries.GetDocumentTree
 
         public Guid? ParentId { get; set; }
 
-        public List<DocumentTreeDto> Children { get; set; }
+        public List<DocumentTreeDto> Children { get; set; } = null!;
     }
 }

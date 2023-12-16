@@ -173,8 +173,7 @@ export class DocumentClient implements IDocumentClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
-            result200 = DocumentDto.fromJS(resultData200, _mappings);
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as DocumentDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -211,15 +210,7 @@ export class DocumentClient implements IDocumentClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DocumentMetaDto.fromJS(item, _mappings));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as DocumentMetaDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -256,15 +247,7 @@ export class DocumentClient implements IDocumentClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DocumentTreeDto.fromJS(item, _mappings));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as DocumentTreeDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -350,15 +333,7 @@ export class SpaceClient implements ISpaceClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(SpaceDto.fromJS(item, _mappings));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as SpaceDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -370,342 +345,55 @@ export class SpaceClient implements ISpaceClient {
     }
 }
 
-export class LoginDto implements ILoginDto {
-    email!: string;
-    password!: string;
-
-    constructor(data?: ILoginDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): LoginDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<LoginDto>(data, _mappings, LoginDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        return data;
-    }
+export interface LoginDto {
+    email?: string;
+    password?: string;
 }
 
-export interface ILoginDto {
-    email: string;
-    password: string;
+export interface SaveDocumentCommand {
+    documentId?: string;
+    spaceId?: string;
+    parentId?: string | undefined;
+    name?: string;
+    content?: string;
 }
 
-export class SaveDocumentCommand implements ISaveDocumentCommand {
-    documentId!: string;
-    spaceId!: string;
-    parentId!: string | undefined;
-    name!: string;
-    content!: string;
-
-    constructor(data?: ISaveDocumentCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.documentId = _data["documentId"];
-            this.spaceId = _data["spaceId"];
-            this.parentId = _data["parentId"];
-            this.name = _data["name"];
-            this.content = _data["content"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): SaveDocumentCommand | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<SaveDocumentCommand>(data, _mappings, SaveDocumentCommand);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentId"] = this.documentId;
-        data["spaceId"] = this.spaceId;
-        data["parentId"] = this.parentId;
-        data["name"] = this.name;
-        data["content"] = this.content;
-        return data;
-    }
+export interface DocumentDto {
+    documentId?: string;
+    name?: string;
+    createdOn?: moment.Moment;
+    updatedOn?: moment.Moment;
+    authorName?: string;
+    content?: string;
+    spaceId?: string;
 }
 
-export interface ISaveDocumentCommand {
-    documentId: string;
-    spaceId: string;
-    parentId: string | undefined;
-    name: string;
-    content: string;
+export interface DocumentMetaDto {
+    documentId?: string;
+    name?: string;
+    createdOn?: moment.Moment;
+    updatedOn?: moment.Moment;
+    authorName?: string;
 }
 
-export class DocumentDto implements IDocumentDto {
-    documentId!: string;
-    name!: string;
-    createdOn!: moment.Moment;
-    updatedOn!: moment.Moment;
-    authorName!: string;
-    content!: string;
-    spaceId!: string;
-
-    constructor(data?: IDocumentDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.documentId = _data["documentId"];
-            this.name = _data["name"];
-            this.createdOn = _data["createdOn"] ? moment.parseZone(_data["createdOn"].toString()) : <any>undefined;
-            this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
-            this.authorName = _data["authorName"];
-            this.content = _data["content"];
-            this.spaceId = _data["spaceId"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): DocumentDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<DocumentDto>(data, _mappings, DocumentDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentId"] = this.documentId;
-        data["name"] = this.name;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString(true) : <any>undefined;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
-        data["authorName"] = this.authorName;
-        data["content"] = this.content;
-        data["spaceId"] = this.spaceId;
-        return data;
-    }
+export interface DocumentTreeDto {
+    documentId?: string;
+    name?: string;
+    createdOn?: moment.Moment;
+    updatedOn?: moment.Moment;
+    authorName?: string;
+    parentId?: string | undefined;
+    children?: DocumentTreeDto[];
 }
 
-export interface IDocumentDto {
-    documentId: string;
-    name: string;
-    createdOn: moment.Moment;
-    updatedOn: moment.Moment;
-    authorName: string;
-    content: string;
-    spaceId: string;
+export interface SaveSpaceCommand {
+    spaceId?: string | undefined;
+    name?: string;
 }
 
-export class DocumentMetaDto implements IDocumentMetaDto {
-    documentId!: string;
-    name!: string;
-    createdOn!: moment.Moment;
-    updatedOn!: moment.Moment;
-    authorName!: string;
-
-    constructor(data?: IDocumentMetaDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.documentId = _data["documentId"];
-            this.name = _data["name"];
-            this.createdOn = _data["createdOn"] ? moment.parseZone(_data["createdOn"].toString()) : <any>undefined;
-            this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
-            this.authorName = _data["authorName"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): DocumentMetaDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<DocumentMetaDto>(data, _mappings, DocumentMetaDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentId"] = this.documentId;
-        data["name"] = this.name;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString(true) : <any>undefined;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
-        data["authorName"] = this.authorName;
-        return data;
-    }
-}
-
-export interface IDocumentMetaDto {
-    documentId: string;
-    name: string;
-    createdOn: moment.Moment;
-    updatedOn: moment.Moment;
-    authorName: string;
-}
-
-export class DocumentTreeDto implements IDocumentTreeDto {
-    documentId!: string;
-    name!: string;
-    createdOn!: moment.Moment;
-    updatedOn!: moment.Moment;
-    authorName!: string;
-    parentId!: string | undefined;
-    children!: DocumentTreeDto[];
-
-    constructor(data?: IDocumentTreeDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.documentId = _data["documentId"];
-            this.name = _data["name"];
-            this.createdOn = _data["createdOn"] ? moment.parseZone(_data["createdOn"].toString()) : <any>undefined;
-            this.updatedOn = _data["updatedOn"] ? moment.parseZone(_data["updatedOn"].toString()) : <any>undefined;
-            this.authorName = _data["authorName"];
-            this.parentId = _data["parentId"];
-            if (Array.isArray(_data["children"])) {
-                this.children = [] as any;
-                for (let item of _data["children"])
-                    this.children!.push(DocumentTreeDto.fromJS(item, _mappings));
-            }
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): DocumentTreeDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<DocumentTreeDto>(data, _mappings, DocumentTreeDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentId"] = this.documentId;
-        data["name"] = this.name;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString(true) : <any>undefined;
-        data["updatedOn"] = this.updatedOn ? this.updatedOn.toISOString(true) : <any>undefined;
-        data["authorName"] = this.authorName;
-        data["parentId"] = this.parentId;
-        if (Array.isArray(this.children)) {
-            data["children"] = [];
-            for (let item of this.children)
-                data["children"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IDocumentTreeDto {
-    documentId: string;
-    name: string;
-    createdOn: moment.Moment;
-    updatedOn: moment.Moment;
-    authorName: string;
-    parentId: string | undefined;
-    children: DocumentTreeDto[];
-}
-
-export class SaveSpaceCommand implements ISaveSpaceCommand {
-    spaceId!: string | undefined;
-    name!: string;
-
-    constructor(data?: ISaveSpaceCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.spaceId = _data["spaceId"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): SaveSpaceCommand | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<SaveSpaceCommand>(data, _mappings, SaveSpaceCommand);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["spaceId"] = this.spaceId;
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface ISaveSpaceCommand {
-    spaceId: string | undefined;
-    name: string;
-}
-
-export class SpaceDto implements ISpaceDto {
-    id!: string;
-    name!: string;
-
-    constructor(data?: ISpaceDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any, _mappings?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any, _mappings?: any): SpaceDto | null {
-        data = typeof data === 'object' ? data : {};
-        return createInstance<SpaceDto>(data, _mappings, SpaceDto);
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface ISpaceDto {
-    id: string;
-    name: string;
+export interface SpaceDto {
+    id?: string;
+    name?: string;
 }
 
 function jsonParse(json: any, reviver?: any) {
