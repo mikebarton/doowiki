@@ -11,23 +11,30 @@ interface IDocumentTreeNodeProps {
 const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    const Toggle = ({expanded : boolean}: any)=>{
-        if(!item.children || item.children.length === 0)
+    const Toggle = ()=>{
+        const tranformStyles = {
+            visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
+            transform: isOpen ? 'rotate(90deg)' : undefined
+        }
+
+        return <Flex  align={'center'}><IconButton size={'1'} onClick={()=> setIsOpen(!isOpen)} style = {tranformStyles} variant='ghost'><TriangleRightIcon width={'24'} height={'24'}/></IconButton></Flex>
+    }
+
+    const Children = ()=>{
+        if(!item.children || item.children.length === 0 || !isOpen)
             return <></>
 
-            const tranformStyles = {
-                transform: isOpen ? 'rotate(90deg)' : undefined
-            }
-
-        return <><IconButton size={'1'} onClick={()=> setIsOpen(!isOpen)} style = {tranformStyles} variant='ghost'><TriangleRightIcon width={'24'} height={'24'}/></IconButton></>
+        return <Flex direction={'column'}>
+            {item.children.map(c=><DocumentTreeNode item={c}/>)}
+        </Flex>
     }
 
     return <>
-        <Flex align={'center'}>
-            <Toggle expanded={isOpen}/>
+        <Flex align={'start'}>
+            <Toggle />
             <Flex direction={'column'}>
                 <Link to={'/home/' + item.documentId}>{item.name}</Link>
-                
+                <Children/>
             </Flex>
         </Flex>
     </>
