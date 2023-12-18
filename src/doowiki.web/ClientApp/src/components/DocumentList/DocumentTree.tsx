@@ -12,13 +12,13 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
     const Toggle = () => {
-        const tranformStyles = {
-            visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
-            transform: isOpen ? 'rotate(90deg)' : ''
+        const styles : React.CSSProperties = {
+                visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
+                transform: isOpen ? 'rotate(90deg)' : ''
         }
 
         return <Flex align={'center'}>
-                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={tranformStyles} variant='ghost'>
+                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={styles} variant='ghost'>
                         <TriangleRightIcon width={'24'} height={'24'} />
                     </IconButton>
                 </Flex>
