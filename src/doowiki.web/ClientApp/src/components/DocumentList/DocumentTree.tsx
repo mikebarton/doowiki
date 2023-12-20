@@ -29,7 +29,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
             return <></>
 
         return <Flex direction={'column'}>
-            {item.children.map(c => <DocumentTreeNode item={c} />)}
+            {item.children.map(c => <DocumentTreeNode key={c.documentId} item={c} />)}
         </Flex>
     }
 
@@ -62,7 +62,7 @@ const DocumentTree = () => {
     }, [SpaceId]);
 
 
-    return <Flex direction={'column'}>{documents && documents.map(d => <DocumentTreeNode item={d} />)}</Flex>
+    return <Flex direction={'column'}>{documents && documents.map(d => <DocumentTreeNode key={d.documentId} item={d} />)}</Flex>
 
 }
 
