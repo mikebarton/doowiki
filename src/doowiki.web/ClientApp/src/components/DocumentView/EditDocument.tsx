@@ -1,8 +1,7 @@
 import React from 'react';
 import useWikiApi, { SaveDocumentCommand} from '../../api/useWikiApi';
 import { DocumentDto } from '../../api/api.generated.clients';
-import { Flex, TextField, TextArea, Text, Em, IconButton } from '@radix-ui/themes';
-import { DiscIcon } from '@radix-ui/react-icons';
+import { Flex, TextField, TextArea, Text, Em, Button } from '@radix-ui/themes';
 import { ISpaceContext, SpaceContext } from '../../utils/GlobalContextProvider';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 
@@ -35,6 +34,10 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
             initDocument();
     }, [DocumentId]);
 
+    function onCancel(){
+        navigate('/home/' + document?.documentId);
+    }
+
     function onSave(){
         async function doSave(){
             const args = {
@@ -45,7 +48,7 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
                 parentId: searchParams.get('parentId')           
             } as SaveDocumentCommand
             await wikiApi.SaveDocument(args);
-            navigate('/home/' + document?.documentId)
+            navigate('/home/' + document?.documentId);
         }
         doSave();
     }
@@ -58,7 +61,10 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
                 <Flex asChild grow={'1'}>
                     <TextArea value={document?.content} onChange={e => setDocument({ ...document, content: e.target.value } as DocumentDto)} mb={'3'} />
                 </Flex>
-                <IconButton onClick={onSave}><DiscIcon/></IconButton>
+                <Flex gap={'3'}>
+                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button onClick={onSave}>Save</Button>
+                </Flex>
             </Flex>
         </>
     )
