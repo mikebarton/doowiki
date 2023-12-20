@@ -4,21 +4,24 @@ import useWikiApi, { DocumentTreeDto } from "../../api/useWikiApi";
 import { Link } from 'react-router-dom';
 import { Flex, IconButton } from '@radix-ui/themes';
 import { TriangleRightIcon } from '@radix-ui/react-icons';
+import { useParams } from 'react-router-dom';
 
 interface IDocumentTreeNodeProps {
     item: DocumentTreeDto
 }
 const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const { id } = useParams();
+    
 
     const Toggle = () => {
-        const styles : React.CSSProperties = {
+        const buttonStyles : React.CSSProperties = {
                 visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
-                transform: isOpen ? 'rotate(90deg)' : ''
-        }
+                transform: isOpen ? 'rotate(90deg)' : '',
+        }        
 
-        return <Flex align={'center'}>
-                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={styles} variant='ghost'>
+        return <Flex align={'center'} >
+                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={buttonStyles} variant='ghost'>
                         <TriangleRightIcon width={'24'} height={'24'} />
                     </IconButton>
                 </Flex>
@@ -33,11 +36,15 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
         </Flex>
     }
 
+    const selectedStyle : React.CSSProperties = {
+        fontWeight: item.documentId === id ? 'bolder' : 'normal'
+    }
+
     return <>
         <Flex align={'start'}>
             <Toggle />
             <Flex direction={'column'}>
-                <Link to={'/home/' + item.documentId}>{item.name}</Link>
+                <Link to={'/home/' + item.documentId} style={selectedStyle}>{item.name}</Link>
                 <Children />
             </Flex>
         </Flex>

@@ -8,6 +8,7 @@ import Home from './pages/Home/Home';
 import Edit from './pages/Edit/Edit';
 import NavMenuLayout from './layouts/NavMenuLayout';
 import { GlobalContextProvider } from './utils/GlobalContextProvider';
+import Admin from './pages/Admin/Admin';
 
 function App() {
     return (
@@ -25,7 +26,10 @@ function App() {
                         <Route path='Edit' element={<NavMenuLayout/>}>
                             <Route index element={<Edit/>}/>
                             <Route path=":id" element={<Edit/>}/>    
-                        </Route>                     
+                        </Route>    
+                        <Route path='Admin' element={<NavMenuLayout/>}>
+                            <Route index element={<Admin />}/>    
+                        </Route>                 
                     </Routes>
                 </BrowserRouter>
             </GlobalContextProvider>

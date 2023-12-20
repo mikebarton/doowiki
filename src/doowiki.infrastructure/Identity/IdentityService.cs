@@ -75,9 +75,18 @@ namespace doowiki.infrastructure.Identity
 
         public async Task<bool> IsInRoleAsync(Guid userId, string role)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            
             return user != null && await _userManager.IsInRoleAsync(user, role);
+        }
+
+        public async Task<IList<string>> GetUserRoles(Guid userId)
+        {
+            var user = await _userManager.Users.SingleAsync(u => u.Id == userId);
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return roles;
         }
 
         //public async Task<bool> AuthorizeAsync(Guid userId, string policyName)

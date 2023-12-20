@@ -15,6 +15,8 @@ namespace doowiki.application.Common.Interfaces
 
         Task<bool> IsInRoleAsync(Guid userId, string role);
 
+        Task<IList<string>> GetUserRoles(Guid userId);
+
         //Task<bool> AuthorizeAsync(Guid userId, string policyName);
 
         Task<(Result Result, Guid UserId)> CreateUserAsync(string email, string password);

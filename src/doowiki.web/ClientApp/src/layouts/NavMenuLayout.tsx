@@ -1,11 +1,12 @@
 ﻿import { Flex, Box } from "@radix-ui/themes"
 import { Outlet } from 'react-router-dom';
 import NavMenu from "../components/NavMenu/NavMenu";
+import AdminButton from "../components/AdminButton/AdminButton";
 
 const NavMenuLayout = () => {
     const styles = {
         navStyle: {
-            width: '300px'
+            width: '400px'
         },
         contentStyle: {
             width: '100%'
@@ -18,9 +19,9 @@ const NavMenuLayout = () => {
                 <NavMenu/>
             </Flex>
             <Flex direction={'column'} justify={'start'} align={'stretch'} style={styles.contentStyle}>
-                <Box width={"100%"} >
-                    <h1>Doowiki</h1>
-                </Box>
+                <Flex justify={'end'}>
+                    <AdminButton/>
+                </Flex>
                 <Box width={'100%'} height={'100%'}><Outlet /></Box>
             </Flex>
             
