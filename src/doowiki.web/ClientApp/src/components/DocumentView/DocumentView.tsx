@@ -4,6 +4,9 @@ import { DocumentDto } from '../../api/api.generated.clients';
 import { Flex, TextField, TextArea, Text, Em, Heading, IconButton } from '@radix-ui/themes';
 import { Pencil1Icon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
+import styles from './DocumentView.module.css'
 
 interface IDocumentViewProps{
     DocumentId: string,
@@ -32,7 +35,7 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
 
     return (
         <>
-            <Flex direction={'column'} justify={'start'} align={'stretch'}>
+            <Flex direction={'column'} justify={'start'} align={'stretch'} gap={'3'} p={'5'}>
                 <Flex align={'center'}>
                     <Heading>{document?.name}</Heading>
                     <IconButton ml={'1'} variant='ghost' onClick={onEdit}><Pencil1Icon/></IconButton>
@@ -42,7 +45,7 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
                     <Em>Created By:</Em>
                     <Text ml={'1'}>{document?.authorName}</Text>
                 </Flex>
-                <Text>{document?.content}</Text>
+                <Markdown className={styles.reactMarkDown} remarkPlugins={[remarkGfm]}>{document?.content}</Markdown>
             </Flex>
         </>
     )

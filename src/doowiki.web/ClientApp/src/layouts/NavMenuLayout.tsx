@@ -13,7 +13,7 @@ const NavMenuLayout = () => {
     }
 
     return (
-        <Flex direction={'row'} justify={'start'} align={'stretch'}>
+        <Flex direction={'row'} justify={'start'} align={'stretch'} height={'100%'}>
             <Flex direction={'column'} justify={'start'} align={'stretch'} style={styles.navStyle} gap={'3'} m={'3'}>
                 <NavMenu/>
             </Flex>
@@ -21,7 +21,7 @@ const NavMenuLayout = () => {
                 <Box width={"100%"} >
                     <h1>Doowiki</h1>
                 </Box>
-                <Box width={'100%'} ><Outlet /></Box>
+                <Box width={'100%'} height={'100%'}><Outlet /></Box>
             </Flex>
             
         </Flex>
