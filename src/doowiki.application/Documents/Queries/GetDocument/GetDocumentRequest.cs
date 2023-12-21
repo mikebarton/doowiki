@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace doowiki.application.Documents.Queries.GetDocument
-{    
+{
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Author}, {Roles.ReadOnly}")]
     public class GetDocumentRequest : IRequest<DocumentDto?>
     {
         public Guid DocumentId { get; set; }

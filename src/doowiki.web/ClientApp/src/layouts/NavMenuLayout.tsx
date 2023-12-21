@@ -1,9 +1,15 @@
-﻿import { Flex, Box } from "@radix-ui/themes"
+﻿import React from 'react';
+import { Flex, Box } from "@radix-ui/themes"
 import { Outlet } from 'react-router-dom';
 import NavMenu from "../components/NavMenu/NavMenu";
 import AdminButton from "../components/AdminButton/AdminButton";
-
+import useSecurityApi from '../api/useSecurityApi';
 const NavMenuLayout = () => {
+    const securityApi = useSecurityApi();
+    React.useEffect(()=>{
+        securityApi.LoadSession();
+    },[])
+
     const styles = {
         navStyle: {
             width: '400px'

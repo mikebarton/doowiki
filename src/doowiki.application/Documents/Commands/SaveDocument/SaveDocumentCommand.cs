@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using doowiki.application.Common.Security;
+using doowiki.domain.Constants;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Documents.Commands.SaveDocument
 {
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Author}")]
     public class SaveDocumentCommand : IRequest<Guid>
     {
         public Guid DocumentId { get; set; }

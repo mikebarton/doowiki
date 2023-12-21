@@ -72,12 +72,14 @@ namespace doowiki.infrastructure.Data
         public async Task TrySeedAsync()
         {
             // Default roles
+            var roles = Roles.RoleNames.Select(x => new AppRole(x)).ToList();
             var administratorRole = new AppRole(Roles.Admin);
 
-            if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
+            var rolesToAdd = roles.Where(r => !_roleManager.RoleExistsAsync(r.Name).GetAwaiter().GetResult()).ToList();
+            foreach (var role in rolesToAdd)
             {
-                await _roleManager.CreateAsync(administratorRole);
-            }
+                await _roleManager.CreateAsync(role);
+            }            
 
             if(!_context.Spaces.Any(x=> x.Name == "Default"))
             {

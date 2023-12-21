@@ -1,4 +1,5 @@
 ﻿using doowiki.application.Common.Security;
+using doowiki.domain.Constants;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Spaces.Queries.GetSpacesList
 {
-    [Authorize]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Author}, {Roles.ReadOnly}")]
     public class GetSpacesListRequest : IRequest<SpaceDto[]>
     {
     }

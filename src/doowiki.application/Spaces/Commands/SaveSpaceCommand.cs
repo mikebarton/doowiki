@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using doowiki.application.Common.Security;
+using doowiki.domain.Constants;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace doowiki.application.Spaces.Commands
 {
+
+    [Authorize(Roles = $"{Roles.Author}, {Roles.Admin}")]
     public class SaveSpaceCommand : IRequest<Guid>
     {
         public Guid? SpaceId { get; set; }

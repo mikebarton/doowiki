@@ -1,5 +1,6 @@
 ﻿using doowiki.application.Common.Interfaces;
 using doowiki.application.Common.Models;
+using doowiki.domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,8 +56,23 @@ namespace doowiki.infrastructure.Identity
             {
                 return false;
             }
-
+            
             var result = await _userManager.AddToRolesAsync(user, roleNames);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> SetUserRoles(Guid userId, params string[] roles)
+        {
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            foreach(var role in Roles.RoleNames)
+            {
+                if (await _userManager.IsInRoleAsync(user, role))
+                    await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            var  result = await _userManager.AddToRolesAsync(user, roles);
 
             return result.Succeeded;
         }

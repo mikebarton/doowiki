@@ -1,10 +1,11 @@
 import React from 'react';
 import { IconButton, Dialog } from "@radix-ui/themes";
-import { PersonIcon } from '@radix-ui/react-icons';
+import { Pencil1Icon, PersonIcon } from '@radix-ui/react-icons';
 import UserForm, { ICanSaveForm } from "../EditUserForm/EditUserForm";
 
 interface IEditUserButton{
-    userId?: string | undefined
+    userId?: string | undefined,
+    onUpdated?: ()=> void
 }
 
 const EditUserButton = (props : IEditUserButton) => {
@@ -13,12 +14,12 @@ const EditUserButton = (props : IEditUserButton) => {
     return <Dialog.Root>
         <Dialog.Trigger>
             <IconButton variant="soft">
-                <PersonIcon />
+                { props.userId ? <Pencil1Icon/> : <PersonIcon/>}
             </IconButton>
         </Dialog.Trigger>
         <Dialog.Content>
-            <Dialog.Title>Add User</Dialog.Title>
-            <UserForm.Content userId={props.userId} ref={formRef}/>
+            <Dialog.Title>Edit User</Dialog.Title>
+            <UserForm.Content userId={props.userId} ref={formRef} onUpdated={props.onUpdated}/>
             <Dialog.Close>
                 <UserForm.SaveButton onClick={()=> formRef?.current?.onSave()}/>
             </Dialog.Close>

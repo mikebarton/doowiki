@@ -10,7 +10,9 @@ export interface ISpaceContext{
 
 export interface IUserContext{
     UserId: string | undefined,
-    SetUserId: (userId : string) => void
+    SetUserId: (userId : string) => void,
+    Roles: string[] | undefined,
+    SetRoles: (roles : string[]) => void
 }
 
 export interface IGlobalContextProviderProps{
@@ -24,10 +26,11 @@ export const GlobalContextProvider = ({
   children,
 } : IGlobalContextProviderProps) => {
   const [userId, setUserId] = React.useState(defaultUserId);
+  const [roles, setRoles] = React.useState<string[]>([])
   const [spaceId, setSpaceId] = React.useState(defaultSpaceId);
 
   return (
-    <UserContext.Provider value={{ UserId: userId, SetUserId: setUserId }}>
+    <UserContext.Provider value={{ UserId: userId, SetUserId: setUserId, Roles: roles, SetRoles: setRoles }}>
       <SpaceContext.Provider value={{SpaceId: spaceId, SetSpaceId: setSpaceId }}>
           {children}
       </SpaceContext.Provider>

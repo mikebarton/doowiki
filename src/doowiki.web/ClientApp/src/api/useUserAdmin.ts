@@ -1,16 +1,16 @@
 import { UsersClient, GetUserDto, GetUserItemDto, UpdateUserCommand, CreateUserCommand } from './api.generated.clients';
 
-interface IUseUserAdmin{
-    ListUsers : ()=> Promise<GetUserDto[]>,
-    GetUser: (userId : string)=> Promise<GetUserDto>,
-    UpdateUser: (user : UpdateUserCommand) => Promise<string>,
-    CreateUser: (user : CreateUserCommand) => Promise<string>
+interface IUseUserAdmin {
+    ListUsers: () => Promise<GetUserDto[]>,
+    GetUser: (userId: string) => Promise<GetUserDto>,
+    UpdateUser: (user: UpdateUserCommand) => Promise<boolean>,
+    CreateUser: (user: CreateUserCommand) => Promise<boolean>
 }
 
-export default function() : IUseUserAdmin{
+export default function (): IUseUserAdmin {
     const client = new UsersClient();
 
-    const listUsers = () : Promise<GetUserItemDto[]> =>{
+    const listUsers = (): Promise<GetUserItemDto[]> => {
         const users = client.list();
         return users;
     }
@@ -20,15 +20,27 @@ export default function() : IUseUserAdmin{
         return user;
     }
 
-    const updateUser = (user : UpdateUserCommand) : Promise<string> =>{
-        if(!user.userId)
+    const updateUser = async (user: UpdateUserCommand): Promise<boolean> => {
+        if (!user.userId)
             throw new Error("cannot update user without id");
 
-        return client.usersPut(user, user.userId!);
+        try {
+            await client.usersPut(user, user.userId!);
+            return true;
+        }
+        catch {
+            return false;
+        }
     }
 
-    const createUser = (user : CreateUserCommand) : Promise<string> => {
-        return client.usersPost(user);
+    const createUser = async (user: CreateUserCommand): Promise<boolean> => {
+        try {
+            await client.usersPost(user);
+            return true;
+        }
+        catch {
+            return false;
+        }
     }
 
     return {

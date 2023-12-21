@@ -4,6 +4,7 @@ import { DocumentDto } from '../../api/api.generated.clients';
 import { Flex, TextField, TextArea, Text, Em, Button } from '@radix-ui/themes';
 import { ISpaceContext, SpaceContext } from '../../utils/GlobalContextProvider';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import useSecurity from '../../utils/useSecurity';
 
 interface IEditDocumentProps {
     DocumentId: string | undefined,
@@ -11,6 +12,7 @@ interface IEditDocumentProps {
 
 const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     const wikiApi = useWikiApi();
+    const security = useSecurity();
     const [document, setDocument] = React.useState<DocumentDto>();
     const {SpaceId, SetSpaceId} = React.useContext<ISpaceContext>(SpaceContext);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -35,10 +37,10 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     }, [DocumentId]);
 
     function onCancel(){
-        navigate('/home/' + document?.documentId);
+        navigate('/home');
     }
 
-    function onSave(){
+    function onSave(){        
         async function doSave(){
             const args = {
                 name: document?.name,
@@ -50,7 +52,9 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
             await wikiApi.SaveDocument(args);
             navigate('/home/' + document?.documentId);
         }
-        doSave();
+        
+        if(security.CanWrite())
+            doSave();
     }
 
     return (

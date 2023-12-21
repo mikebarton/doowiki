@@ -24,11 +24,13 @@ namespace doowiki.application.WikiUser.Queries.GetUser
         public async Task<GetUserDto> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(request.UserId, cancellationToken);
+            var username = await _identityService.GetUserNameAsync(user.IdentityUserId);
             var userDto = new GetUserDto
                 {
                     UserId = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Email = username,
                     Roles = (await _identityService.GetUserRoles(user.IdentityUserId)).ToArray()
                 };
             return userDto;            

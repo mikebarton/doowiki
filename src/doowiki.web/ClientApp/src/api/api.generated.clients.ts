@@ -10,6 +10,92 @@
 
 import moment from 'moment';
 
+export interface ISecurityClient {
+
+    session(): Promise<SessionContext>;
+
+    roles(command: SetUserRolesCommand): Promise<void>;
+}
+
+export class SecurityClient implements ISecurityClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    session(): Promise<SessionContext> {
+        let url_ = this.baseUrl + "/api/Security/session";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSession(_response);
+        });
+    }
+
+    protected processSession(response: Response): Promise<SessionContext> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as SessionContext;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SessionContext>(null as any);
+    }
+
+    roles(command: SetUserRolesCommand): Promise<void> {
+        let url_ = this.baseUrl + "/api/Security/roles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRoles(_response);
+        });
+    }
+
+    protected processRoles(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+}
+
 export interface IUsersClient {
 
     list(): Promise<GetUserItemDto[]>;
@@ -513,6 +599,15 @@ export class SpaceClient implements ISpaceClient {
         }
         return Promise.resolve<SpaceDto[]>(null as any);
     }
+}
+
+export interface SessionContext {
+    roles?: string[];
+}
+
+export interface SetUserRolesCommand {
+    userId?: string;
+    roles?: string[];
 }
 
 export interface GetUserItemDto {

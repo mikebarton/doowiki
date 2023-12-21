@@ -4,42 +4,50 @@ import { TextField } from '@radix-ui/themes';
 import useUserAdmin, { CreateUserCommand, GetUserDto, UpdateUserCommand } from '../../api/useUserAdmin';
 
 interface IEditUserFormProps {
-    userId?: string | undefined
+    userId?: string | undefined,
+    onUpdated?: ()=> void
 }
 
 interface ICanSaveForm{
     onSave: ()=>void
 }
 
-const EditUserForm = React.forwardRef(({ userId }: IEditUserFormProps, ref: React.ForwardedRef<ICanSaveForm>) => {
+const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps, ref: React.ForwardedRef<ICanSaveForm>) => {
     const userAdmin = useUserAdmin();
     const [user, setUser] = React.useState<GetUserDto>();
     const [password, setPassword] = React.useState<string>();
     const [confirmPassword, setConfirmPassword] = React.useState<string>();
 
-    React.useEffect(() => {
-        async function getUser() {
-            if (!userId)
-                setUser({} as GetUserDto);
-            else {
-                const retrievedUser = await userAdmin.GetUser(userId);
-                setUser(retrievedUser);
-            }
-        }
+    React.useEffect(() => {        
         getUser();
     }, [])    
 
+    async function getUser() {
+        if (!userId)
+            setUser({} as GetUserDto);
+        else {
+            const retrievedUser = await userAdmin.GetUser(userId);
+            setUser(retrievedUser);
+        }
+    }
+
     React.useImperativeHandle(ref, ()=>({
         onSave(){
+            let task : Promise<boolean>;
             if(!!userId){
-                userAdmin.UpdateUser({...user} as UpdateUserCommand)
+                task = userAdmin.UpdateUser({...user} as UpdateUserCommand)                    
             }
             else{
                 if(!password || password !== confirmPassword)
                     return;
 
-                userAdmin.CreateUser({...user, password: password} as CreateUserCommand)
+                task = userAdmin.CreateUser({...user, password: password} as CreateUserCommand)
             }
+
+            task.then(()=> {
+                if(onUpdated)
+                    onUpdated()
+            });
         }
     }))
 
@@ -57,10 +65,10 @@ const EditUserForm = React.forwardRef(({ userId }: IEditUserFormProps, ref: Reac
             
             { !userId && (<>
                     <Text>Password</Text>
-                    <TextField.Input value={password} onChange={e=>setPassword(e.target.value)}/>    
+                    <TextField.Input type='password' value={password} onChange={e=>setPassword(e.target.value)}/>    
 
                     <Text>Confirm Password</Text>
-                    <TextField.Input value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/>    
+                    <TextField.Input type='password' value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/>    
                 </>
             )}        
         </Grid>)

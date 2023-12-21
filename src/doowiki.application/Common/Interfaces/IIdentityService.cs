@@ -22,5 +22,7 @@ namespace doowiki.application.Common.Interfaces
         Task<(Result Result, Guid UserId)> CreateUserAsync(string email, string password);
 
         Task<Result> DeleteUserAsync(Guid userId);
+
+        Task<bool> SetUserRoles(Guid userId, params string[] roles);
     }
 }

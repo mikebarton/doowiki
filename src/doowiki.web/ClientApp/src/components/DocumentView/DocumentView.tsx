@@ -6,6 +6,7 @@ import { Pencil1Icon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
+import useSecurity from '../../utils/useSecurity';
 import styles from './DocumentView.module.css'
 
 interface IDocumentViewProps{
@@ -16,6 +17,7 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
     const wikiApi = useWikiApi();
     const [document, setDocument] = React.useState<DocumentDto>();
     const navigate = useNavigate();
+    const security = useSecurity();
 
     React.useEffect(()=>{
         async function getDocument(){
@@ -38,8 +40,8 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
             <Flex direction={'column'} justify={'start'} align={'stretch'} gap={'3'} p={'5'}>
                 <Flex align={'center'}>
                     <Heading>{document?.name}</Heading>
-                    <IconButton ml={'1'} variant='ghost' onClick={onEdit}><Pencil1Icon/></IconButton>
-                    <IconButton ml={'1'} variant='ghost' onClick={onAddChildDocument}><PlusCircledIcon/></IconButton>
+                    { security.CanWrite() && <><IconButton ml={'1'} variant='ghost' onClick={onEdit}><Pencil1Icon/></IconButton>
+                    <IconButton ml={'1'} variant='ghost' onClick={onAddChildDocument}><PlusCircledIcon/></IconButton></> }
                 </Flex>
                 <Flex mb={'5'}>
                     <Em>Created By:</Em>
