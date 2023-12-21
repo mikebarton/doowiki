@@ -1,7 +1,6 @@
 import React from 'react';
 import useUserAdmin, { GetUserDto } from '../../api/useUserAdmin';
 import { Table, Flex } from '@radix-ui/themes';
-import { getuid, setuid } from 'process';
 import AddUserButton from '../UserToolbar/EditUserButton';
 import EditRolesButton from '../EditRolesButton/EditRolesButton';
 

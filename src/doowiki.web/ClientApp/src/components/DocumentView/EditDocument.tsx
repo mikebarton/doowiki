@@ -37,7 +37,10 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     }, [DocumentId]);
 
     function onCancel(){
-        navigate('/home');
+        if(DocumentId)
+            navigate('/home/' + DocumentId);
+        else
+            navigate('/home');
     }
 
     function onSave(){        
@@ -52,7 +55,7 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
             await wikiApi.SaveDocument(args);
             navigate('/home/' + document?.documentId);
         }
-        
+
         if(security.CanWrite())
             doSave();
     }

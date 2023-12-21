@@ -2,6 +2,7 @@ import React from 'react';
 import UserList from '../../components/UserList/UserList';
 import UserToolbar from '../../components/UserToolbar/UserToolbar';
 import { Tabs, Box, Flex } from '@radix-ui/themes';
+import SpacesList from '../../components/SpacesList/SpacesList';
 
 const Admin = () => {
 
@@ -21,7 +22,7 @@ const Admin = () => {
                     </Tabs.Content>
 
                     <Tabs.Content value='spaces'>
-
+                        <SpacesList/>
                     </Tabs.Content>
                 </Box>
             </Tabs.Root>
