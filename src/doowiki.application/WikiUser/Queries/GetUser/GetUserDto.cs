@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace doowiki.application.WikiUser.Queries.GetUserList
+namespace doowiki.application.WikiUser.Queries.GetUser
 {
     public class GetUserDto
-    {
+    { 
+        public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

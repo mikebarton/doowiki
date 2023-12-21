@@ -36,7 +36,7 @@ const SpaceSelector = () => {
                 <Select.Content>
                     {spaces.map(s => {
                         return (
-                            <>{s && <Select.Item key={s.id} value={s.id!}>{s.name}</Select.Item>}</>
+                            s && <Select.Item key={s.id} value={s.id!}>{s.name}</Select.Item>
                         )
                     }) }
                 </Select.Content>

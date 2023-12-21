@@ -17,6 +17,9 @@ namespace doowiki.application.WikiUser.Commands.CreateUser
             RuleFor(v => v.Password)
                 .MinimumLength(6)
                 .MaximumLength(30)
+                .Matches(@"[A-Z]+")
+                .Matches(@"[a-z]")
+                .Matches(@"[0-9]")
                 .NotEmpty();
         }
     }

@@ -4,38 +4,34 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace doowiki.application.WikiUser.Queries.GetUserList
+namespace doowiki.application.WikiUser.Queries.GetUser
 {
-    public class GetUserListHandler : IRequestHandler<GetUserListRequest, GetUserItemDto[]>
+    public class GetUserHandler : IRequestHandler<GetUserRequest, GetUserDto>
     {
         private readonly IApplicationDbContext _context;
         private readonly IIdentityService _identityService;
 
-        public GetUserListHandler(IApplicationDbContext context, IIdentityService identityService)
+        public GetUserHandler(IApplicationDbContext context, IIdentityService identityService)
         {
             _context = context;
             _identityService = identityService;
         }
 
-        public async Task<GetUserItemDto[]> Handle(GetUserListRequest request, CancellationToken cancellationToken)
+        public async Task<GetUserDto> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
-            var users = await _context.Users.ToListAsync();
-            var wikiUsers = new List<GetUserItemDto>();
-            foreach (var user in users)
-            {
-                wikiUsers.Add(new GetUserItemDto
+            var user = await _context.Users.FindAsync(request.UserId, cancellationToken);
+            var userDto = new GetUserDto
                 {
                     UserId = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Roles = (await _identityService.GetUserRoles(user.IdentityUserId)).ToArray()
-                });
-            }
-
-            return wikiUsers.ToArray();
+                };
+            return userDto;            
         }
     }
 }

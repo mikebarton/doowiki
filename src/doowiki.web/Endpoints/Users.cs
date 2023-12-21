@@ -1,7 +1,11 @@
 ﻿using doowiki.api.Infrastructure;
+using doowiki.application.WikiUser.Commands.CreateUser;
+using doowiki.application.WikiUser.Commands.SaveUser;
+using doowiki.application.WikiUser.Queries.GetUser;
 using doowiki.application.WikiUser.Queries.GetUserList;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using System;
 using System.Threading.Tasks;
 
 namespace doowiki.web.Endpoints
@@ -12,13 +16,34 @@ namespace doowiki.web.Endpoints
         {
             app.MapGroup(this)
                 .RequireAuthorization()
-                .MapGet(GetUserList);
+                .MapGet(GetUserList, "/list")
+                .MapGet(GetUser, "{id}")
+                .MapPut(UpdateUser, "{id}")
+                .MapPost(CreateUser);
         }
 
-        public async Task<GetUserDto[]> GetUserList(ISender sender)
+        public async Task<GetUserItemDto[]> GetUserList(ISender sender)
         {
             var users = await sender.Send(new GetUserListRequest());
             return users;
+        }
+
+        public async Task<GetUserDto> GetUser(ISender sender, Guid id)
+        {
+            var user = await sender.Send(new GetUserRequest { UserId = id });
+            return user;
+        }
+
+        public async Task<Guid> UpdateUser(ISender sender, UpdateUserCommand command, Guid id)
+        {
+            var returnedId = await sender.Send(command);
+            return returnedId;
+        }
+
+        public async Task<Guid> CreateUser(ISender sender, CreateUserCommand command)
+        {
+            var id = await sender.Send(command);
+            return id;
         }
     }
 }

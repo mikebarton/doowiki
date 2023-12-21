@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace doowiki.application.WikiUser.Queries.GetUserList
+namespace doowiki.application.WikiUser.Queries.GetUser
 {
     [Authorize(Roles = Roles.Admin)]
-    public class GetUserListRequest : IRequest<GetUserItemDto[]>
+    public class GetUserRequest : IRequest<GetUserDto>
     {
+        public Guid UserId { get; set; }
     }
 }

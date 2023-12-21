@@ -12,7 +12,13 @@ import moment from 'moment';
 
 export interface IUsersClient {
 
-    users(): Promise<GetUserDto[]>;
+    list(): Promise<GetUserItemDto[]>;
+
+    usersGet(id: string): Promise<GetUserDto>;
+
+    usersPut(command: UpdateUserCommand, id: string): Promise<string>;
+
+    usersPost(command: CreateUserCommand): Promise<string>;
 }
 
 export class UsersClient implements IUsersClient {
@@ -25,8 +31,8 @@ export class UsersClient implements IUsersClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    users(): Promise<GetUserDto[]> {
-        let url_ = this.baseUrl + "/api/Users";
+    list(): Promise<GetUserItemDto[]> {
+        let url_ = this.baseUrl + "/api/Users/list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -37,18 +43,18 @@ export class UsersClient implements IUsersClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsers(_response);
+            return this.processList(_response);
         });
     }
 
-    protected processUsers(response: Response): Promise<GetUserDto[]> {
+    protected processList(response: Response): Promise<GetUserItemDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         let _mappings: { source: any, target: any }[] = [];
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as GetUserDto[];
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as GetUserItemDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -56,7 +62,121 @@ export class UsersClient implements IUsersClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetUserDto[]>(null as any);
+        return Promise.resolve<GetUserItemDto[]>(null as any);
+    }
+
+    usersGet(id: string): Promise<GetUserDto> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersGet(_response);
+        });
+    }
+
+    protected processUsersGet(response: Response): Promise<GetUserDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as GetUserDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GetUserDto>(null as any);
+    }
+
+    usersPut(command: UpdateUserCommand, id: string): Promise<string> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersPut(_response);
+        });
+    }
+
+    protected processUsersPut(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as string;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
+    }
+
+    usersPost(command: CreateUserCommand): Promise<string> {
+        let url_ = this.baseUrl + "/api/Users";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersPost(_response);
+        });
+    }
+
+    protected processUsersPost(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as string;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
     }
 }
 
@@ -395,11 +515,34 @@ export class SpaceClient implements ISpaceClient {
     }
 }
 
-export interface GetUserDto {
+export interface GetUserItemDto {
+    userId?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
     roles?: string[];
+}
+
+export interface GetUserDto {
+    userId?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    roles?: string[];
+}
+
+export interface UpdateUserCommand {
+    userId?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+}
+
+export interface CreateUserCommand {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
 }
 
 export interface LoginDto {
