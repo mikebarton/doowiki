@@ -9,30 +9,37 @@ import Edit from './pages/Edit/Edit';
 import NavMenuLayout from './layouts/NavMenuLayout';
 import { GlobalContextProvider } from './utils/GlobalContextProvider';
 import Admin from './pages/Admin/Admin';
+import ColorModeProvider from './utils/ColorModeProvider';
+import {globalStyles} from './themes/index';
 
 function App() {
+    globalStyles();
+    
+
     return (
         <div id="container">
-            <GlobalContextProvider defaultSpaceId={undefined} defaultUserId={undefined}>
-                <BrowserRouter>
-                    <Routes>        
-                        <Route path="/" element={<Layout />}>
-                            <Route index element={<Login />} />
-                        </Route>                
-                        <Route path={'Home'} element={<NavMenuLayout />} >
-                            <Route path={':id'} element={<Home/>}/>
-                            <Route path="*" element={<Home />} />
-                        </Route>   
-                        <Route path='Edit' element={<NavMenuLayout/>}>
-                            <Route index element={<Edit/>}/>
-                            <Route path=":id" element={<Edit/>}/>    
-                        </Route>    
-                        <Route path='Admin' element={<NavMenuLayout/>}>
-                            <Route index element={<Admin />}/>    
-                        </Route>                 
-                    </Routes>
-                </BrowserRouter>
-            </GlobalContextProvider>
+            <ColorModeProvider>
+                <GlobalContextProvider defaultSpaceId={undefined} defaultUserId={undefined}>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Layout />}>
+                                <Route index element={<Login />} />
+                            </Route>
+                            <Route path={'Home'} element={<NavMenuLayout />} >
+                                <Route path={':id'} element={<Home />} />
+                                <Route path="*" element={<Home />} />
+                            </Route>
+                            <Route path='Edit' element={<NavMenuLayout />}>
+                                <Route index element={<Edit />} />
+                                <Route path=":id" element={<Edit />} />
+                            </Route>
+                            <Route path='Admin' element={<NavMenuLayout />}>
+                                <Route index element={<Admin />} />
+                            </Route>
+                        </Routes>
+                    </BrowserRouter>
+                </GlobalContextProvider>
+            </ColorModeProvider>
         </div>
     );
 }

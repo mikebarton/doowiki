@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Flex, IconButton } from '@radix-ui/themes';
 import { TriangleRightIcon } from '@radix-ui/react-icons';
 import { useParams } from 'react-router-dom';
+import { css } from '../../themes';
 
 interface IDocumentTreeNodeProps {
     item: DocumentTreeDto
@@ -18,11 +19,21 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
         const buttonStyles : React.CSSProperties = {
                 visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
                 transform: isOpen ? 'rotate(90deg)' : '',
-        }        
+        }      
+        
+        const styles = { 
+            buttonStyle: {
+                visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
+                transform: isOpen ? 'rotate(90deg)' : '',
+            },
+            toggleStyle: {
+                color: '$accentedText',
+            }
+        }
 
         return <Flex align={'center'} >
-                    <IconButton size={'1'} onClick={() => setIsOpen(!isOpen)} style={buttonStyles} variant='ghost'>
-                        <TriangleRightIcon width={'24'} height={'24'} />
+                    <IconButton className={css(styles.buttonStyle)()} size={'1'} onClick={() => setIsOpen(!isOpen)} variant='ghost'>
+                        <TriangleRightIcon width={'24'} height={'24'} className={css(styles.toggleStyle)()}/>
                     </IconButton>
                 </Flex>
     }

@@ -8,6 +8,7 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import useSecurity from '../../utils/useSecurity';
 import styles from './DocumentView.module.css'
+import { css } from '../../themes';
 
 interface IDocumentViewProps{
     DocumentId: string,
@@ -35,11 +36,20 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
         navigate(`/edit?parentId=${DocumentId}`)
     }
 
+    const jssStyles={
+        heading:{
+            colour: '$mainHeading'
+        },
+        content:{
+            colour: '$mainText'
+        }
+    }
+
     return (
         <>
             <Flex direction={'column'} justify={'start'} align={'stretch'} gap={'3'} p={'5'}>
-                <Flex align={'center'}>
-                    <Heading>{document?.name}</Heading>
+                <Flex className={css(jssStyles.heading)()} align={'center'}>
+                    <Heading className={css(jssStyles.heading)()}>{document?.name}</Heading>
                     { security.CanWrite() && <><IconButton ml={'1'} variant='ghost' onClick={onEdit}><Pencil1Icon/></IconButton>
                     <IconButton ml={'1'} variant='ghost' onClick={onAddChildDocument}><PlusCircledIcon/></IconButton></> }
                 </Flex>
@@ -47,7 +57,7 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
                     <Em>Created By:</Em>
                     <Text ml={'1'}>{document?.authorName}</Text>
                 </Flex>
-                <Markdown className={styles.reactMarkDown} remarkPlugins={[remarkGfm]}>{document?.content}</Markdown>
+                <Markdown className={`${css(jssStyles.content)()} ${styles.reactMarkDown}`} remarkPlugins={[remarkGfm]}>{document?.content}</Markdown>
             </Flex>
         </>
     )
