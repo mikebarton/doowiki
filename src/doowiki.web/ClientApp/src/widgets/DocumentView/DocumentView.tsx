@@ -50,8 +50,8 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
             <Flex direction={'column'} justify={'flex-start'} align={'stretch'} gap={1} padding={[1]}>
                 <Flex className={css(jssStyles.heading)()} align={'center'}>
                     <Heading className={css(jssStyles.heading)()}>{document?.name}</Heading>
-                    { security.CanWrite() && <><Button margin={[0,0,0,1]} onClick={onEdit}><Pencil1Icon/></Button>
-                    <Button margin={[0,0,0,1]} onClick={onAddChildDocument}><PlusCircledIcon/></Button></> }
+                    { security.CanWrite() && <><Button variant={'soft'} margin={[0,0,0,1]} onClick={onEdit}><Pencil1Icon/></Button>
+                    <Button variant={'soft'} margin={[0,0,0,1]} onClick={onAddChildDocument}><PlusCircledIcon/></Button></> }
                 </Flex>
                 <Flex margin={[0, 0, 1, 0]}>
                     <Em><>Created By:</></Em>

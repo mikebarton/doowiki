@@ -32,7 +32,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
         }
 
         return <Flex align={'center'} >
-                    <Button className={css(styles.buttonStyle)()} onClick={() => setIsOpen(!isOpen)} >
+                    <Button variant={'ghost'} className={css(styles.buttonStyle)()} onClick={() => setIsOpen(!isOpen)} >
                         <TriangleRightIcon width={'24'} height={'24'} className={css(styles.toggleStyle)()}/>
                     </Button>
                 </Flex>

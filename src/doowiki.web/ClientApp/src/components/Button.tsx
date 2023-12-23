@@ -17,4 +17,22 @@ const Button = (props : IButtonProps) => {
     return React.createElement('button', elementProps, props.children )
 }
 
-export default styled(Button);
+export default styled(Button,
+    {
+        margin: '2px',
+        padding: '2px',
+        variants:{
+            variant:{
+                ghost:{
+                    padding: 0,
+                    border: 'none',
+                    backgroundColor: 'inherit'
+                },
+                soft: {
+                    backgroundColor: 'inherit',
+                    borderRadius: '5px',
+                    borderWidth: '1px'
+                }
+            }
+        }
+    });

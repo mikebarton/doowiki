@@ -18,7 +18,7 @@ const AddDocumentButton = () => {
     }
 
     return (
-        <Button onClick={onAddDocument}>
+        <Button variant={'soft'} onClick={onAddDocument}>
             <PlusCircledIcon className={css(styles.iconStyles)()}/>  
         </Button>
     )
