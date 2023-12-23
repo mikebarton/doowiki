@@ -1,4 +1,4 @@
-﻿import EditDocument from "../../components/DocumentView/EditDocument";
+﻿import EditDocument from "../../widgets/DocumentView/EditDocument";
 import { useParams } from "react-router-dom";
 
 interface IEditProps{

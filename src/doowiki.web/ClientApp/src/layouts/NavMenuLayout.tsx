@@ -1,8 +1,8 @@
 ﻿import React from 'react';
 import { Flex, Box } from "@radix-ui/themes"
 import { Outlet } from 'react-router-dom';
-import NavMenu from "../components/NavMenu/NavMenu";
-import AdminButton from "../components/AdminButton/AdminButton";
+import NavMenu from "../widgets/NavMenu/NavMenu";
+import AdminButton from "../widgets/AdminButton/AdminButton";
 import useSecurityApi from '../api/useSecurityApi';
 import { styled, css } from '../themes';
 import { ColorModeContext } from '../utils/ColorModeProvider';

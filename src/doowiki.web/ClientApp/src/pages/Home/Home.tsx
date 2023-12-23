@@ -1,4 +1,4 @@
-﻿import DocumentView from "../../components/DocumentView/DocumentView";
+﻿import DocumentView from "../../widgets/DocumentView/DocumentView";
 import { useParams } from "react-router-dom";
 
 interface IHomeProps{

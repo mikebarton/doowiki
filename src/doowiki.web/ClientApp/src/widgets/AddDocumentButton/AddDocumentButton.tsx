@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton } from '@radix-ui/themes';
+import { Button } from '../../components';
 import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { useNavigate } from 'react-router-dom';
 import { css } from '../../themes';
@@ -18,9 +18,9 @@ const AddDocumentButton = () => {
     }
 
     return (
-        <IconButton variant='soft' onClick={onAddDocument}>
+        <Button onClick={onAddDocument}>
             <PlusCircledIcon className={css(styles.iconStyles)()}/>  
-        </IconButton>
+        </Button>
     )
 }
 

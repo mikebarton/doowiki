@@ -2,7 +2,7 @@ import React from 'react';
 import { SpaceContext } from "../../utils/GlobalContextProvider";
 import useWikiApi, { DocumentTreeDto } from "../../api/useWikiApi";
 import { Link } from 'react-router-dom';
-import { Flex, IconButton } from '@radix-ui/themes';
+import { Flex, Button } from '../../components';
 import { TriangleRightIcon } from '@radix-ui/react-icons';
 import { useParams } from 'react-router-dom';
 import { css } from '../../themes';
@@ -32,9 +32,9 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
         }
 
         return <Flex align={'center'} >
-                    <IconButton className={css(styles.buttonStyle)()} size={'1'} onClick={() => setIsOpen(!isOpen)} variant='ghost'>
+                    <Button className={css(styles.buttonStyle)()} onClick={() => setIsOpen(!isOpen)} >
                         <TriangleRightIcon width={'24'} height={'24'} className={css(styles.toggleStyle)()}/>
-                    </IconButton>
+                    </Button>
                 </Flex>
     }
 
@@ -52,7 +52,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     }
 
     return <>
-        <Flex align={'start'}>
+        <Flex align={'flex-start'}>
             <Toggle />
             <Flex direction={'column'}>
                 <Link to={'/home/' + item.documentId} style={selectedStyle}>{item.name}</Link>
