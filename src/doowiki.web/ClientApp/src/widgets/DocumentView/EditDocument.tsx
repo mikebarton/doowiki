@@ -6,6 +6,7 @@ import { ISpaceContext, SpaceContext } from '../../utils/GlobalContextProvider';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import useSecurity from '../../utils/useSecurity';
 import * as Form from '@radix-ui/react-form';
+import { css } from '../../themes';
 
 interface IEditDocumentProps {
     DocumentId: string | undefined,
@@ -60,15 +61,26 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
         }
 
         if (security.CanWrite())
-            doSave();//.finally(()=> false);
+            doSave();
 
         e.preventDefault();            
+    }
+
+    const styles = {
+        form: {
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%'
+        },
+        contentField:{
+            height: '100%'
+        }
     }
 
     return (
         <>
             <Flex direction={'column'} justify={'flex-start'} align={'stretch'} width={'100%'} height={'100%'} padding={[2]} >
-                <Form.Root onSubmit={onSave}>
+                <Form.Root className={css(styles.form)()} onSubmit={onSave}>
                     <Form.Field name='title'>
                         <Flex margin={[0, 0, 2, 0]}>
                             <Form.Control asChild>
@@ -80,10 +92,10 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
                         <Em>Created By:</Em>
                         <Span margin={[0, 0, 0, 1]}>{document?.authorName}</Span>
                     </Flex>
-                    <Form.Field name='content'>
-                        <Flex direction='row' align='stretch' grow={1}>
+                    <Form.Field className={css(styles.contentField)()} name='content'>
+                        <Flex direction='column' height='100%' align='stretch' grow={1}>
                             <Form.Control asChild>
-                                <textarea value={document?.content} style={{ flexGrow: 1 }} onChange={e => setDocument({ ...document, content: e.target.value } as DocumentDto)} />
+                                <textarea className={css(styles.contentField)()} value={document?.content} onChange={e => setDocument({ ...document, content: e.target.value } as DocumentDto)} />
                             </Form.Control>
                         </Flex>
                     </Form.Field>
