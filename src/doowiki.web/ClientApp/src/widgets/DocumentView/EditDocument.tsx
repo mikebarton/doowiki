@@ -46,7 +46,7 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
             navigate('/home');
     }
 
-    function onSave() {
+    function onSave(e : React.FormEvent<HTMLFormElement>) {
         async function doSave() {
             const args = {
                 name: document?.name,
@@ -60,7 +60,9 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
         }
 
         if (security.CanWrite())
-            doSave();
+            doSave();//.finally(()=> false);
+
+        e.preventDefault();            
     }
 
     return (
