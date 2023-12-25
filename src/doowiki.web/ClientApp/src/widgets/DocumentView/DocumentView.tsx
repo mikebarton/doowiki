@@ -58,7 +58,7 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
                     <Em><>Created By:</></Em>
                     <Span margin={[0,0,0,1]}>{document?.authorName}</Span>
                 </Flex>
-                <Flex padding={[1]}>
+                <Flex direction='column' align='stretch' padding={[1]}>
                     <Markdown className={`${css(jssStyles.content)()} ${styles.reactMarkDown}`} remarkPlugins={[remarkGfm]}>{document?.content}</Markdown>
                 </Flex>
             </Flex>

@@ -1,5 +1,6 @@
 ﻿import React from 'react';
-import { Flex, Box } from "@radix-ui/themes"
+import { Box } from "@radix-ui/themes"
+import { Flex } from '../components';
 import { Outlet } from 'react-router-dom';
 import NavMenu from "../widgets/NavMenu/NavMenu";
 import AdminButton from "../widgets/AdminButton/AdminButton";
@@ -20,11 +21,13 @@ const NavMenuLayout = () => {
             width: '400px'
         },
         contentStyle: {
-            width: '100%'
+            width: '100%',
+            overflow: 'auto'
         },
         navMenu: {
             backgroundColor: '$accented',
-            color:'$accentedText'
+            color:'$accentedText',
+            width: '400px'
         },
         mainPane: {
             backgroundColor: '$background'
@@ -33,12 +36,12 @@ const NavMenuLayout = () => {
 
 
     return (
-        <Flex direction={'row'} justify={'start'} align={'stretch'} height={'100%'} className={css(styles.mainPane)()}>
-            <Flex className={css(styles.navMenu)()} direction={'column'} justify={'start'} align={'stretch'} style={styles.navStyle} gap={'3'} m={'3'}>
+        <Flex direction={'row'} justify={'flex-start'} align={'stretch'} height={'100vh'} className={css(styles.mainPane)()}>
+            <Flex className={css(styles.navMenu)()} direction={'column'} justify={'flex-start'} align={'stretch'} gap={3} margin={[1]}>
                 <NavMenu />
             </Flex>
-            <Flex direction={'column'} justify={'start'} align={'stretch'} className={css(styles.contentStyle)()}>
-                <Flex justify={'end'}>
+            <Flex direction={'column'} justify={'flex-start'} align={'stretch'} className={css(styles.contentStyle)()}>
+                <Flex justify={'flex-end'}>
                     <AdminButton />
                 </Flex>
                 <Box width={'100%'} height={'100%'}><Outlet /></Box>
