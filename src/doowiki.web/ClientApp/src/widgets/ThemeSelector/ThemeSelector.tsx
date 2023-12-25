@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton } from '@radix-ui/themes';
+import { Button } from '../../components';
 import { SunIcon } from '@radix-ui/react-icons';
 import { css } from '../../themes';
 import { ColorModeContext } from '../../utils/ColorModeProvider';
@@ -17,9 +17,9 @@ const ThemeSelector = ()=>{
         }
     }
 
-    return (<IconButton variant='soft' onClick={()=>setIsDark(!isDark)}>
+    return (<Button variant='soft' onClick={()=>setIsDark(!isDark)}>
         <SunIcon className={css(styles.iconStyles)()}/>
-    </IconButton>)
+    </Button>)
 }
 
 

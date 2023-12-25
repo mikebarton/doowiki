@@ -14,7 +14,7 @@ const AdminButton = ()=>{
     if(!security.IsAdmin())
         return <></>
 
-    return <Button onClick={onLoadAdmin}>
+    return <Button variant={'icon'} onClick={onLoadAdmin}>
                 <GearIcon/>
             </Button>
 }

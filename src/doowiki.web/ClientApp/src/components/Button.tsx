@@ -32,6 +32,21 @@ export default styled(Button,
                     backgroundColor: 'inherit',
                     borderRadius: '5px',
                     borderWidth: '1px'
+                },
+                icon: {
+                    height: '32px',
+                    width: '32px',
+                    backgroundColor: '$accentedSubtle',
+                    color: '$accented',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box',
+                    flexShrink: 0,
+                    verticalAlign: 'top',
+                    border: 'none',
+                    borderRadius: '5px',
+                    margin: '2px'
                 }
             }
         }
