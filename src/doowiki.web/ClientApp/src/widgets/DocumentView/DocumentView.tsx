@@ -9,7 +9,6 @@ import useSecurity from '../../utils/useSecurity';
 import styles from './DocumentView.module.css'
 import { css } from '../../themes';
 import { Heading, Em, Flex, Span, Button } from '../../components';
-import { IconButton } from '@radix-ui/themes';
 
 interface IDocumentViewProps{
     DocumentId: string,

@@ -1,8 +1,9 @@
-import { Button, Flex, Text, Grid, Select, IconButton } from '@radix-ui/themes';
 import { PlusCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
+import { Flex, Button, Div, Span, Heading } from '../../components';
 import React from 'react';
 import useUserAdmin, { GetUserDto } from '../../api/useUserAdmin';
 import useSecurityApi from '../../api/useSecurityApi';
+import { Select } from '@radix-ui/themes';
 
 interface IEditRolesProps {
     userId: string,
@@ -47,9 +48,9 @@ const EditRoles = React.forwardRef((props: IEditRolesProps, ref: React.Forwarded
         setRoles(newRoles);
     }
 
-    return <Flex direction={'column'} gap={'3'}>
-        <Flex gap={'3'}>
-            <Text>Role Name:</Text>
+    return <Flex direction={'column'} gap={3}>
+        <Flex gap={3}>
+            <Span>Role Name:</Span>
             <Select.Root defaultValue='ReadOnly' onValueChange={t => setSelectedRole(t)}>
                 <Select.Trigger />
                 <Select.Content>
@@ -58,18 +59,18 @@ const EditRoles = React.forwardRef((props: IEditRolesProps, ref: React.Forwarded
                     <Select.Item value='ReadOnly'>ReadOnly</Select.Item>
                 </Select.Content>
             </Select.Root>
-            <IconButton value={'soft'} onClick={onAddRole}>
+            <Button variant={'icon'} onClick={onAddRole}>
                 <PlusCircledIcon />
-            </IconButton>
+            </Button>
         </Flex>
         {roles.map(r => {
             return (
-                <Grid columns={'2'} gap={'3'}>
-                    <Text>{r}</Text>
-                    <IconButton variant='soft' onClick={() => onDeleteRole(r)}>
+                <Flex gap={3}>
+                    <Span>{r}</Span>
+                    <Button variant='icon' onClick={() => onDeleteRole(r)}>
                         <Cross1Icon />
-                    </IconButton>
-                </Grid>
+                    </Button>
+                </Flex>
             )
         })}
     </Flex>

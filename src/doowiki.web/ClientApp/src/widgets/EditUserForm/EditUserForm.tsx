@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Text, Button } from '@radix-ui/themes';
+import { Flex, Button, Span } from '../../components';
 import { TextField } from '@radix-ui/themes';
 import useUserAdmin, { CreateUserCommand, GetUserDto, UpdateUserCommand } from '../../api/useUserAdmin';
 
@@ -53,25 +53,25 @@ const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps
 
 
     return (
-        <Grid columns={'2'} gap={'3'}>
-            <Text>First Name</Text>
+        <Flex gap={3}>
+            <Span>First Name</Span>
             <TextField.Input value={user?.firstName} onChange={e=>setUser({...user, firstName: e.target.value})}/>
 
-            <Text>Last Name</Text>
+            <Span>Last Name</Span>
             <TextField.Input value={user?.lastName} onChange={e=>setUser({...user, lastName: e.target.value})}/>
 
-            <Text>Email Name</Text>
+            <Span>Email Name</Span>
             <TextField.Input value={user?.email} onChange={e=>setUser({...user, email: e.target.value})}/>    
             
             { !userId && (<>
-                    <Text>Password</Text>
+                    <Span>Password</Span>
                     <TextField.Input type='password' value={password} onChange={e=>setPassword(e.target.value)}/>    
 
-                    <Text>Confirm Password</Text>
+                    <Span>Confirm Password</Span>
                     <TextField.Input type='password' value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/>    
                 </>
             )}        
-        </Grid>)
+        </Flex>)
 })
 
 interface ISaveUserButtonProps{

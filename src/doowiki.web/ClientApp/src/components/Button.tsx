@@ -3,7 +3,7 @@ import { IDivProps, DivStyleBuilder } from './Div';
 import { css, styled } from '../themes';
 
 interface IButtonProps extends IDivProps{
-    onClick?: () => void | undefined
+    onClick?: () => void | undefined | Promise<void>
 }
 
 const Button = (props : IButtonProps) => {

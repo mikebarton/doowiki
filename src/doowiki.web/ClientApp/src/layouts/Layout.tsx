@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Flex, Box } from "@radix-ui/themes";
-
+import { Flex } from "../components";
 export default function (){
 
     return (

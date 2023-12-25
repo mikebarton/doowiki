@@ -1,6 +1,5 @@
 ﻿import React from 'react';
-import { Box } from "@radix-ui/themes"
-import { Flex } from '../components';
+import { Flex, Div } from '../components';
 import { Outlet } from 'react-router-dom';
 import NavMenu from "../widgets/NavMenu/NavMenu";
 import AdminButton from "../widgets/AdminButton/AdminButton";
@@ -44,7 +43,7 @@ const NavMenuLayout = () => {
                 <Flex justify={'flex-end'}>
                     <AdminButton />
                 </Flex>
-                <Box width={'100%'} height={'100%'}><Outlet /></Box>
+                <Div width={'100%'} height={'100%'}><Outlet /></Div>
             </Flex>
 
         </Flex>

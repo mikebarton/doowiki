@@ -1,4 +1,4 @@
-import { Button } from '@radix-ui/themes';
+import { Button } from '../../components';
 import useAccounts from '../../api/useAccounts';
 import { useNavigate } from "react-router-dom";
 
