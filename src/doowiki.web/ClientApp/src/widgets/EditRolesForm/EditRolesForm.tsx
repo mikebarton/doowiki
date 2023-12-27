@@ -1,9 +1,11 @@
-import { PlusCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
+import { PlusCircledIcon, Cross1Icon, ChevronDownIcon } from '@radix-ui/react-icons';
 import { Flex, Button, Div, Span, Heading } from '../../components';
 import React from 'react';
 import useUserAdmin, { GetUserDto } from '../../api/useUserAdmin';
 import useSecurityApi from '../../api/useSecurityApi';
-import { Select } from '@radix-ui/themes';
+import * as Select from '@radix-ui/react-select';
+import { styled } from '../../themes';
+import SelectStyles from '../../styles/Select';
 
 interface IEditRolesProps {
     userId: string,
@@ -52,12 +54,19 @@ const EditRoles = React.forwardRef((props: IEditRolesProps, ref: React.Forwarded
         <Flex gap={3}>
             <Span>Role Name:</Span>
             <Select.Root defaultValue='ReadOnly' onValueChange={t => setSelectedRole(t)}>
-                <Select.Trigger />
-                <Select.Content>
-                    <Select.Item value='Admin'>Admin</Select.Item>
-                    <Select.Item value='Author'>Author</Select.Item>
-                    <Select.Item value='ReadOnly'>ReadOnly</Select.Item>
-                </Select.Content>
+                <SelectTrigger>
+                    <Select.Value placeholder="Select a role">{selectedRole}</Select.Value>
+                    <Select.Icon className="SelectIcon">
+                        <ChevronDownIcon />
+                    </Select.Icon>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectViewport>
+                        <SelectItem value='Admin'>Admin</SelectItem>
+                        <SelectItem value='Author'>Author</SelectItem>
+                        <SelectItem value='ReadOnly'>ReadOnly</SelectItem>
+                    </SelectViewport>
+                </SelectContent>
             </Select.Root>
             <Button variant={'icon'} onClick={onAddRole}>
                 <PlusCircledIcon />
@@ -75,6 +84,11 @@ const EditRoles = React.forwardRef((props: IEditRolesProps, ref: React.Forwarded
         })}
     </Flex>
 })
+
+const SelectTrigger = styled(Select.Trigger, SelectStyles.trigger);
+const SelectContent = styled(Select.Content, SelectStyles.content);
+const SelectItem = styled(Select.Item, SelectStyles.item);
+const SelectViewport = styled(Select.SelectViewport, SelectStyles.viewport);
 
 interface ISaveRolesButtonProps {
     onClick: () => void

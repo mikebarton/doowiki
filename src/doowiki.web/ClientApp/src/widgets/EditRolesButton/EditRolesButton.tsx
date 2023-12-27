@@ -1,33 +1,41 @@
 import React from 'react';
-import { Dialog } from "@radix-ui/themes";
+import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from '../../components';
 import { Pencil1Icon, PersonIcon } from '@radix-ui/react-icons';
-import EditRoles, { ICanSaveRoles} from '../EditRolesForm/EditRolesForm';
-import { css } from '../../themes';
+import EditRoles, { ICanSaveRoles } from '../EditRolesForm/EditRolesForm';
+import DialogStyles from '../../styles/Dialog';
+import { css, styled } from '../../themes';
 
-interface IEditRolesButton{
+interface IEditRolesButton {
     userId: string,
-    onUpdated?: ()=> void 
+    onUpdated?: () => void
 }
 
-const EditRolesButton = (props : IEditRolesButton) => {
-    const formRef = React.useRef<ICanSaveRoles>(null);
+const EditRolesButton = (props: IEditRolesButton) => {
+    const formRef = React.useRef<ICanSaveRoles>(null);    
 
     return <Dialog.Root>
         <Dialog.Trigger>
             <Button variant="icon">
-                { props.userId ? <Pencil1Icon className={css({color: '$mainText'})()}/> : <PersonIcon className={css({color: '$mainText'})()}/>}
+                {props.userId ? <Pencil1Icon className={css({ color: '$mainText' })()} /> : <PersonIcon className={css({ color: '$mainText' })()} />}
             </Button>
         </Dialog.Trigger>
-        <Dialog.Content>
-            <Dialog.Title>Edit Roles</Dialog.Title>
-            <EditRoles.Content userId={props.userId} ref={formRef} onUpdated={props.onUpdated}/>
-            <Dialog.Close>
-                <EditRoles.SaveButton onClick={()=> formRef?.current?.onSave()}/>
-            </Dialog.Close>
-        </Dialog.Content>
+        <Dialog.Portal>
+            <Overlay />
+            <Content >
+                <Dialog.Title>Edit Roles</Dialog.Title>
+                <EditRoles.Content userId={props.userId} ref={formRef} onUpdated={props.onUpdated} />
+                <Dialog.Close>
+                    <EditRoles.SaveButton onClick={() => formRef?.current?.onSave()} />
+                </Dialog.Close>
+            </Content>
+        </Dialog.Portal>
     </Dialog.Root>
 }
 
+
+
+const Overlay = styled(Dialog.Overlay, DialogStyles.overlay);
+const Content = styled(Dialog.Content, DialogStyles.content);
 
 export default EditRolesButton;

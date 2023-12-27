@@ -1,15 +1,15 @@
 import React from 'react';
-import { Flex, Button, Span } from '../../components';
-import { TextField } from '@radix-ui/themes';
+import { Flex, Button } from '../../components';
+import * as Form from '@radix-ui/react-form'
 import useUserAdmin, { CreateUserCommand, GetUserDto, UpdateUserCommand } from '../../api/useUserAdmin';
 
 interface IEditUserFormProps {
     userId?: string | undefined,
-    onUpdated?: ()=> void
+    onUpdated?: () => void
 }
 
-interface ICanSaveForm{
-    onSave: ()=>void
+interface ICanSaveForm {
+    onSave: () => void
 }
 
 const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps, ref: React.ForwardedRef<ICanSaveForm>) => {
@@ -18,9 +18,9 @@ const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps
     const [password, setPassword] = React.useState<string>();
     const [confirmPassword, setConfirmPassword] = React.useState<string>();
 
-    React.useEffect(() => {        
+    React.useEffect(() => {
         getUser();
-    }, [])    
+    }, [])
 
     async function getUser() {
         if (!userId)
@@ -31,21 +31,21 @@ const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps
         }
     }
 
-    React.useImperativeHandle(ref, ()=>({
-        onSave(){
-            let task : Promise<boolean>;
-            if(!!userId){
-                task = userAdmin.UpdateUser({...user} as UpdateUserCommand)                    
+    React.useImperativeHandle(ref, () => ({
+        onSave() {
+            let task: Promise<boolean>;
+            if (!!userId) {
+                task = userAdmin.UpdateUser({ ...user } as UpdateUserCommand)
             }
-            else{
-                if(!password || password !== confirmPassword)
+            else {
+                if (!password || password !== confirmPassword)
                     return;
 
-                task = userAdmin.CreateUser({...user, password: password} as CreateUserCommand)
+                task = userAdmin.CreateUser({ ...user, password: password } as CreateUserCommand)
             }
 
-            task.then(()=> {
-                if(onUpdated)
+            task.then(() => {
+                if (onUpdated)
                     onUpdated()
             });
         }
@@ -53,31 +53,68 @@ const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps
 
 
     return (
-        <Flex gap={3}>
-            <Span>First Name</Span>
-            <TextField.Input value={user?.firstName} onChange={e=>setUser({...user, firstName: e.target.value})}/>
+        <Form.Root>
+            <Flex direction='column' gap={3}>
+                <Form.Field name='fname'>
+                    <Flex direction='column'>
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Message match={'valueMissing'}>Enter a First Name</Form.Message>
+                        <Form.Control asChild>
+                            <input value={user?.firstName} onChange={e => setUser({ ...user, firstName: e.target.value })} />
+                        </Form.Control>
+                    </Flex>
+                </Form.Field>
 
-            <Span>Last Name</Span>
-            <TextField.Input value={user?.lastName} onChange={e=>setUser({...user, lastName: e.target.value})}/>
+                <Form.Field name='lname'>
+                    <Flex direction='column'>
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Message match={'valueMissing'}>Enter a Last Name</Form.Message>
+                        <Form.Control asChild>
+                            <input value={user?.lastName} onChange={e => setUser({ ...user, lastName: e.target.value })} />
+                        </Form.Control>
+                    </Flex>
+                </Form.Field>
 
-            <Span>Email Name</Span>
-            <TextField.Input value={user?.email} onChange={e=>setUser({...user, email: e.target.value})}/>    
-            
-            { !userId && (<>
-                    <Span>Password</Span>
-                    <TextField.Input type='password' value={password} onChange={e=>setPassword(e.target.value)}/>    
+                <Form.Field name='email'>
+                    <Flex direction='column'>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Message match={'typeMismatch'}>Enter an Email</Form.Message>
+                        <Form.Control asChild>
+                            <input type='email' value={user?.email} onChange={e => setUser({ ...user, email: e.target.value })} />
+                        </Form.Control>
+                    </Flex>
+                </Form.Field>
 
-                    <Span>Confirm Password</Span>
-                    <TextField.Input type='password' value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/>    
+                {!userId && (<>
+                    <Form.Field name='password'>
+                        <Flex direction='column'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Message match={'valueMissing'}>Enter an Password</Form.Message>
+                            <Form.Control asChild>
+                                <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
+                            </Form.Control>
+                        </Flex>
+                    </Form.Field>
+
+                    <Form.Field name='confirmPassword'>
+                        <Flex direction='column'>
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Message match={'valueMissing'}>Enter an Email</Form.Message>
+                            <Form.Control asChild>
+                                <input type='password' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                            </Form.Control>
+                        </Flex>
+                    </Form.Field>
                 </>
-            )}        
-        </Flex>)
+                )}
+            </Flex>
+        </Form.Root>)
 })
 
-interface ISaveUserButtonProps{
-    onClick: ()=>void
+interface ISaveUserButtonProps {
+    onClick: () => void
 }
-const SaveUserButton = (props : ISaveUserButtonProps)=>{    
+const SaveUserButton = (props: ISaveUserButtonProps) => {
     return <Button onClick={props.onClick}>Save</Button>
 }
 

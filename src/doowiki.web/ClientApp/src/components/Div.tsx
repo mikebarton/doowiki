@@ -8,12 +8,14 @@ interface IDivProps{
     className?: string,
     padding?: LayoutValue | undefined,
     margin? : LayoutValue | undefined,
-    display? : 'none' | 'block' | 'inline' | 'inline-block' | undefined,
+    display? : 'none' | 'block' | 'inline' | 'inline-block' |  undefined,
     width?: string | undefined,
     height?: string | undefined,
-    children: React.ReactNode
+    children: React.ReactNode,
+    flex?: string | undefined
+    style?: React.CSSProperties | undefined
 }
-const DivStyleBuilder = (props : IDivProps) => {
+const DivStyleBuilder = (props : IDivProps) : any => {
     const convertSpacingValue = (val : SpacingValues | undefined) : string | undefined =>{
         if (val == undefined)
             return undefined;
@@ -29,7 +31,8 @@ const DivStyleBuilder = (props : IDivProps) => {
         padding: props.padding?.map(m=> convertSpacingValue(m)).join(' '),
         margin: props.margin?.map(m=> convertSpacingValue(m)).join(' '),
         width: props.width,
-        height: props.height
+        height: props.height,
+        flex: props.flex
     };
 
     return styles;
@@ -39,7 +42,8 @@ const Div = (props: IDivProps)=>{
     const style = DivStyleBuilder(props)
 
     const elementProps = {
-        className : `${props.className} ${css(style)()}`        
+        className : `${props.className} ${css(style)()}`,
+        style: props.style    
     }
 
     return React.createElement('div', elementProps, props.children )

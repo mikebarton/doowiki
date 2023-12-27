@@ -1,8 +1,11 @@
 import React from 'react';
 import useWikiApi, { SpaceDto } from "../../api/useWikiApi";
 import { useEffect, useState } from 'react';
-import { Select } from '@radix-ui/themes';
+import * as Select from '@radix-ui/react-select';
+import SelectStyles from '../../styles/Select';
 import { SpaceContext } from "../../utils/GlobalContextProvider";
+import { styled } from '../../themes';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 
 const SpaceSelector = () => {
@@ -32,17 +35,29 @@ const SpaceSelector = () => {
     return (
         <>
             <Select.Root defaultValue={spaceContext.SpaceId} onValueChange={onSpaceSelected}>
-                <Select.Trigger />
-                <Select.Content>
+                <SelectTrigger>
+                <Select.Value placeholder="Select a role">{spaces.find(s=>s.id === spaceContext.SpaceId)?.name}</Select.Value>
+                    <Select.Icon className="SelectIcon">
+                        <ChevronDownIcon />
+                    </Select.Icon>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectViewport>
                     {spaces.map(s => {
                         return (
-                            s && <Select.Item key={s.id} value={s.id!}>{s.name}</Select.Item>
+                            s && <SelectItem key={s.id} value={s.id!}>{s.name}</SelectItem>
                         )
                     }) }
-                </Select.Content>
+                    </SelectViewport>
+                </SelectContent>
             </Select.Root>
         </>
     )
 }
+
+const SelectTrigger = styled(Select.Trigger, SelectStyles.trigger);
+const SelectContent = styled(Select.Content, SelectStyles.content);
+const SelectItem = styled(Select.Item, SelectStyles.item);
+const SelectViewport = styled(Select.SelectViewport, SelectStyles.viewport);
 
 export default SpaceSelector;
