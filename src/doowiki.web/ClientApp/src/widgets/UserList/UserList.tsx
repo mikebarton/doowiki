@@ -1,10 +1,10 @@
 import React from 'react';
 import useUserAdmin, { GetUserDto } from '../../api/useUserAdmin';
-import { Table } from '@radix-ui/themes';
 import AddUserButton from '../UserToolbar/EditUserButton';
 import EditRolesButton from '../EditRolesButton/EditRolesButton';
 import { Flex } from '../../components';
-import { css } from '../../themes';
+import { styled, css } from '../../themes';
+import TableStyles from '../../styles/Table';
 
 const UserList = ()=>{
     const userAdmin = useUserAdmin();
@@ -29,21 +29,31 @@ const UserList = ()=>{
     }
 
     return <>
-            <Table.Root>
-                <Table.Header className={css(styles.tableHeader)()}>
-                    <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Roles</Table.ColumnHeaderCell>
-                    </Table.Header>
-                <Table.Body >
+            <Table>
+                <TableHead className={css(styles.tableHeader)()}>
+                <TableRow>
+                    <HeaderCell>Name</HeaderCell>
+                    <HeaderCell>Roles</HeaderCell>
+                </TableRow>
+                    
+                    </TableHead>
+                <TableBody >
                     { users.map((u,i)=>{
-                        return <Table.Row  key={i}>
-                            <Table.Cell><Flex className={css(styles.tableMain)()} gap={3}>{u.firstName} {u.lastName}<AddUserButton onUpdated={()=> getUsers()} userId={u.userId} /></Flex></Table.Cell>
-                            <Table.Cell><Flex className={css(styles.tableMain)()} gap={3}>{u.roles?.join(',')} <EditRolesButton onUpdated={()=> getUsers()} userId={u.userId!}/></Flex></Table.Cell>
-                        </Table.Row>
+                        return <TableRow  key={i}>
+                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.firstName} {u.lastName}<AddUserButton onUpdated={()=> getUsers()} userId={u.userId} /></Flex></TableCell>
+                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.roles?.join(',')} <EditRolesButton onUpdated={()=> getUsers()} userId={u.userId!}/></Flex></TableCell>
+                        </TableRow>
                     })}
-                </Table.Body>
-            </Table.Root>
+                </TableBody>
+            </Table>
         </>
 }
+
+const Table = styled('table', TableStyles.root);
+const TableRow = styled('tr', TableStyles.row);
+const TableHead = styled('thead', TableStyles.head);
+const TableCell = styled('td', TableStyles.cell);
+const TableBody = styled('tbody', TableStyles.body);
+const HeaderCell = styled('th', TableStyles.cell);
 
 export default UserList;

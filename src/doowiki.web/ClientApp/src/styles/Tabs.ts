@@ -1,0 +1,46 @@
+export default {
+    root:{
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'stretch',
+        // width: '95%',
+        boxShadow: `0 2px 10px grey`,
+    },
+    list:{
+        flexShrink: 0,
+        display: 'flex',
+        borderBottom: `1px solid mauve`,
+    },
+    trigger:{
+        all: 'unset',
+        fontFamily: 'inherit',
+        backgroundColor: 'white',
+        padding: '0 20px',
+        height: 45,
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 15,
+        lineHeight: 1,
+        color: 'grey',
+        userSelect: 'none',
+        '&:first-child': { borderTopLeftRadius: 6 },
+        '&:last-child': { borderTopRightRadius: 6 },
+        '&:hover': { color: 'black' },
+        '&[data-state="active"]': {
+          color: 'black',
+          boxShadow: 'inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor',
+        },
+        '&:focus': { position: 'relative', boxShadow: `0 0 0 2px black` },
+    },
+    content:{
+        flexGrow: 1,
+        padding: 20,
+        backgroundColor: 'white',
+        borderBottomLeftRadius: 6,
+        borderBottomRightRadius: 6,
+        outline: 'none',
+        '&:focus': { boxShadow: `0 0 0 2px black` },
+    }
+}

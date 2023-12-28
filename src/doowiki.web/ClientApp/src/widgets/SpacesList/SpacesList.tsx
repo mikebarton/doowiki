@@ -1,7 +1,8 @@
 import React from 'react';
 import useWikiApi, {SpaceDto} from '../../api/useWikiApi';
-import { Table } from '@radix-ui/themes';
 import { Flex } from '../../components';
+import TableStyles from '../../styles/Table';
+import { styled } from '../../themes';
 
 
 const SpacesList = ()=>{
@@ -18,19 +19,26 @@ const SpacesList = ()=>{
     }
 
     return <>
-            <Table.Root>
-                <Table.Header>
-                    <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-                    </Table.Header>
-                <Table.Body>
+            <Table>
+                <TableHead>
+                    <TableRow><HeaderCell>Name</HeaderCell></TableRow>
+                </TableHead>
+                <TableBody>
                     { spaces.map((u,i)=>{
-                        return <Table.Row key={i}>
-                            <Table.Cell><Flex gap={3}>{u.name}</Flex></Table.Cell>
-                        </Table.Row>
+                        return <TableRow key={i}>
+                            <TableCell><Flex gap={3}>{u.name}</Flex></TableCell>
+                        </TableRow>
                     })}
-                </Table.Body>
-            </Table.Root>
+                </TableBody>
+            </Table>
         </>
 }
+
+const Table = styled('table', TableStyles.root);
+const TableRow = styled('tr', TableStyles.row);
+const TableHead = styled('thead', TableStyles.head);
+const TableCell = styled('td', TableStyles.cell);
+const TableBody = styled('tbody', TableStyles.body);
+const HeaderCell = styled('th', TableStyles.cell)
 
 export default SpacesList;
