@@ -3,7 +3,8 @@ import UserList from '../../widgets/UserList/UserList';
 import UserToolbar from '../../widgets/UserToolbar/UserToolbar';
 import * as Tabs from '@radix-ui/react-tabs';
 import { Flex, Div } from '../../components';
-import SpacesList from '../../widgets/SpacesList/SpacesList';
+import SpacesList from '../../widgets/Spaces/SpacesList';
+import SpacesToolbar from '../../widgets/Spaces/SpacesToolbar';
 import { css, styled } from '../../themes';
 import TabsStyles from '../../styles/Tabs';
 
@@ -25,7 +26,10 @@ const Admin = () => {
                     </TabsContent>
 
                     <TabsContent value='spaces'>
-                        <SpacesList/>
+                        <Flex direction='column' align='stretch' gap={1}>
+                            <SpacesToolbar/>
+                            <SpacesList/>
+                        </Flex>
                     </TabsContent>
                 </Div>
             </TabsRoot>

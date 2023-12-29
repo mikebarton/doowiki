@@ -28,10 +28,10 @@ namespace doowiki.application.Spaces.Commands
             else
             {
                 space = new Space();
+                _applicationDbContext.Spaces.Add(space);
             }
             space.Name = request.Name;
 
-            _applicationDbContext.Spaces.Add(space);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
             return space.SpaceId;
         }

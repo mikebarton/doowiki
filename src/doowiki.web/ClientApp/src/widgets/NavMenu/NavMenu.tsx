@@ -1,4 +1,4 @@
-﻿import SpaceSelector from "../SpaceSelector/SpaceSelector";
+﻿import SpaceSelector from "../Spaces/SpaceSelector";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import DocumentTree from "../DocumentList/DocumentTree";
 import AddDocumentButton from "../AddDocumentButton/AddDocumentButton";
