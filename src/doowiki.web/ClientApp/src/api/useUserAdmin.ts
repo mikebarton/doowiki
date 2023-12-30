@@ -4,7 +4,8 @@ interface IUseUserAdmin {
     ListUsers: () => Promise<GetUserDto[]>,
     GetUser: (userId: string) => Promise<GetUserDto>,
     UpdateUser: (user: UpdateUserCommand) => Promise<boolean>,
-    CreateUser: (user: CreateUserCommand) => Promise<boolean>
+    CreateUser: (user: CreateUserCommand) => Promise<boolean>,
+    DeleteUser: (userId: string ) => Promise<boolean>
 }
 
 export default function (): IUseUserAdmin {
@@ -43,11 +44,22 @@ export default function (): IUseUserAdmin {
         }
     }
 
+    const deleteUser = async (userId: string) : Promise<boolean> => {
+        try{
+            await client.usersDelete(userId);
+            return true;
+        }
+        catch{
+            return false;
+        }
+    }
+
     return {
         ListUsers: listUsers,
         GetUser: getUser,
         UpdateUser: updateUser,
-        CreateUser: createUser
+        CreateUser: createUser,
+        DeleteUser: deleteUser
     } as IUseUserAdmin;
 }
 

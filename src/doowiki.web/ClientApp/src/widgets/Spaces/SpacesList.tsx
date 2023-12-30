@@ -1,9 +1,11 @@
 import React from 'react';
 import useWikiApi, {SpaceDto} from '../../api/useWikiApi';
-import { Flex } from '../../components';
+import { Flex, Button } from '../../components';
+import { Cross1Icon } from '@radix-ui/react-icons';
 import TableStyles from '../../styles/Table';
 import { styled } from '../../themes';
 import EditSpaceButton from './EditSpaceButton';
+import YesNoDialog from '../YesNoDialog/YesNoDialog';
 
 
 const SpacesList = ()=>{
@@ -19,6 +21,10 @@ const SpacesList = ()=>{
         setSpaces(retrievedSpaces);
     }
 
+    function onDeleteSpace(spaceId:string){
+        wikiApi.DeleteSpace(spaceId);
+    }
+
     return <>
             <Table>
                 <TableHead>
@@ -28,7 +34,14 @@ const SpacesList = ()=>{
                     { spaces.map((u,i)=>{
                         return <TableRow key={i}>
                             <TableCell><Flex gap={3}>{u.name}</Flex></TableCell>
-                            <TableCell><Flex gap={3}><EditSpaceButton spaceId={u.id}/></Flex></TableCell>
+                            <TableCell>
+                                <Flex gap={3}>
+                                    <EditSpaceButton spaceId={u.id}/>
+                                    <YesNoDialog questionText={`Delete the space ${u.name}?`} onYes={()=>onDeleteSpace(u.id!)}>
+                                        <Button><Cross1Icon/></Button>
+                                    </YesNoDialog>
+                                </Flex>
+                            </TableCell>
                         </TableRow>
                     })}
                 </TableBody>

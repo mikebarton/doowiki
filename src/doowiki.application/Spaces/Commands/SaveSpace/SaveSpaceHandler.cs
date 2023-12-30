@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace doowiki.application.Spaces.Commands
+namespace doowiki.application.Spaces.Commands.SaveSpace
 {
     internal class SaveSpaceHandler : IRequestHandler<SaveSpaceCommand, Guid>
     {
         private readonly IApplicationDbContext _applicationDbContext;
-        
+
         public SaveSpaceHandler(IApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
@@ -20,10 +20,13 @@ namespace doowiki.application.Spaces.Commands
 
         public async Task<Guid> Handle(SaveSpaceCommand request, CancellationToken cancellationToken)
         {
-            Space space = null;
-            if(request.SpaceId != null && request.SpaceId != Guid.Empty)
+            Space? space = null;
+            if (request.SpaceId != null && request.SpaceId != Guid.Empty)
             {
                 space = await _applicationDbContext.Spaces.FindAsync(request.SpaceId.Value);
+
+                if (space == null)
+                    throw new InvalidDataException("No space with ID: " + request.SpaceId);
             }
             else
             {

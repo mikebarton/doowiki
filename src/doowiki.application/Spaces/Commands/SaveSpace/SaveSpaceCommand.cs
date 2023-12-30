@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace doowiki.application.Spaces.Commands
+namespace doowiki.application.Spaces.Commands.SaveSpace
 {
 
     [Authorize(Roles = $"{Roles.Author}, {Roles.Admin}")]

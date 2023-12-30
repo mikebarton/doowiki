@@ -3,6 +3,7 @@
 export interface WikiApi {
     GetSpaces: () => Promise<SpaceDto[]>,
     SaveSpace: (spaceName: string, spaceId?: string | undefined) => Promise<boolean>,
+    DeleteSpace: (spaceId: string) => Promise<boolean>,
     GetDocumentList: (SpaceId: string) => Promise<DocumentMetaDto[]>,
     GetDocumentTree: (SpaceId: string) => Promise<DocumentTreeDto[]>,
     GetDocument: (DocumentId: string) => Promise<DocumentDto>,
@@ -26,6 +27,16 @@ export default function (): WikiApi {
             return true;
         }
         catch {
+            return false;
+        }
+    }
+
+    const deleteSpace = async (spaceId: string) : Promise<boolean> =>{
+        try{
+            await spaceclient.spaceDelete(spaceId);
+            return true;
+        }
+        catch{
             return false;
         }
     }
@@ -61,7 +72,8 @@ export default function (): WikiApi {
         GetDocumentTree: getDocumentTree,
         GetDocument: getDocument,
         SaveDocument: saveDocument,
-        SaveSpace: saveSpace
+        SaveSpace: saveSpace,
+        DeleteSpace: deleteSpace
     } as WikiApi;
 }
 

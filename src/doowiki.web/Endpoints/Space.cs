@@ -1,9 +1,11 @@
 ﻿using doowiki.api.Infrastructure;
-using doowiki.application.Spaces.Commands;
+using doowiki.application.Spaces.Commands.DeleteSpace;
+using doowiki.application.Spaces.Commands.SaveSpace;
 using doowiki.application.Spaces.Queries.GetSpacesList;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace doowiki.api.Endpoints
@@ -15,7 +17,8 @@ namespace doowiki.api.Endpoints
             app.MapGroup(this)
                 .RequireAuthorization()
                 .MapPost(SaveSpace)
-                .MapGet(GetSpaces);
+                .MapGet(GetSpaces)
+                .MapDelete(DeleteSpace, "{id}");
         }
 
         public async Task<IResult> SaveSpace(ISender sender, SaveSpaceCommand command)
@@ -28,6 +31,11 @@ namespace doowiki.api.Endpoints
         {
             var spaces = await sender.Send(new GetSpacesListRequest());
             return spaces;
+        }
+
+        public async Task DeleteSpace(ISender sender, Guid id)
+        {
+            await sender.Send(new DeleteSpaceCommand { SpaceId = id });
         }
     }
 }

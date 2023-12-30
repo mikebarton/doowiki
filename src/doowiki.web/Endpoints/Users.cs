@@ -1,5 +1,6 @@
 ﻿using doowiki.api.Infrastructure;
 using doowiki.application.WikiUser.Commands.CreateUser;
+using doowiki.application.WikiUser.Commands.DeleteUser;
 using doowiki.application.WikiUser.Commands.SaveUser;
 using doowiki.application.WikiUser.Queries.GetUser;
 using doowiki.application.WikiUser.Queries.GetUserList;
@@ -19,7 +20,8 @@ namespace doowiki.web.Endpoints
                 .MapGet(GetUserList, "/list")
                 .MapGet(GetUser, "{id}")
                 .MapPut(UpdateUser, "{id}")
-                .MapPost(CreateUser);
+                .MapPost(CreateUser)
+                .MapDelete(DeleteUser, "{id}");
         }
 
         public async Task<GetUserItemDto[]> GetUserList(ISender sender)
@@ -44,6 +46,11 @@ namespace doowiki.web.Endpoints
         {
             var id = await sender.Send(command);
             return id;
+        }
+
+        public async Task DeleteUser(ISender sender, Guid id)
+        {
+            await sender.Send(new DeleteUserCommand() { UserId = id });
         }
     }
 }
