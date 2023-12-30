@@ -38,11 +38,10 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
 
     const jssStyles={
         heading:{
-            color: '$mainHeading'
+            color: '$brown11'
         },
         content:{
-            color: '$mainText',
-            backgroundColor: 'white',
+            backgroundColor: '$amber1',
             boxShadow: '0 2px 10px grey',
         }
     }

@@ -17,7 +17,7 @@ const EditRolesButton = (props: IEditRolesButton) => {
     return <Dialog.Root>
         <Dialog.Trigger>
             <Button variant="icon">
-                {props.userId ? <Pencil1Icon className={css({ color: '$mainText' })()} /> : <PersonIcon className={css({ color: '$mainText' })()} />}
+                {props.userId ? <Pencil1Icon /> : <PersonIcon />}
             </Button>
         </Dialog.Trigger>
         <Dialog.Portal>

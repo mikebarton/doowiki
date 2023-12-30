@@ -17,7 +17,7 @@ const EditSpaceButton = (props: IEditSpaceButtonProps) => {
     return <Dialog.Root>
         <Dialog.Trigger>
             <Button variant="icon">
-                {props.spaceId ? <Pencil1Icon className={css({ color: '$mainText' })()} /> : <Pencil1Icon className={css({ color: '$mainText' })()} />}
+                {props.spaceId ? <Pencil1Icon /> : <Pencil1Icon />}
             </Button>
         </Dialog.Trigger>
         <Dialog.Portal>

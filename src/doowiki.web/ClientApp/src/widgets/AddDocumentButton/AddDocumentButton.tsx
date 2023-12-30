@@ -13,7 +13,7 @@ const AddDocumentButton = () => {
 
     const styles = {
         iconStyles: {
-            color: '$accentedText'
+            color: '$slate11'
         }
     }
 

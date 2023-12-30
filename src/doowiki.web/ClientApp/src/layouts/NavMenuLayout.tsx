@@ -24,12 +24,13 @@ const NavMenuLayout = () => {
             overflow: 'auto'
         },
         navMenu: {
-            backgroundColor: '$accented',
-            color:'$accentedText',
+            backgroundColor: '$indigo7',
+            color:'$slate11',
             width: '400px'
         },
         mainPane: {
-            backgroundColor: '$background'
+            backgroundColor: '$gold4',
+            color: '$brown12'
         }
     }
 

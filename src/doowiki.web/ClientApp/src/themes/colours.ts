@@ -1,4 +1,4 @@
-
+import { indigo, indigoDark, gold, goldDark, slate, slateDark, whiteA, amber, amberDark } from '@radix-ui/colors';
 const commonStyles = {
   
 
@@ -27,10 +27,20 @@ const colors = {
   light: {
     ...commonStyles,
     ...lightStyles,
+    ...indigo,
+    ...gold,
+    ...slate,
+    ...amber,
+    ...whiteA
   },
   dark: {
     ...commonStyles,
     ...darkStyles,
+    ...indigoDark,
+    ...goldDark,
+    ...slateDark,
+    ...amberDark,
+    ...whiteA
   },
 };
 

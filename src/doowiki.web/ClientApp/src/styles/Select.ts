@@ -6,7 +6,7 @@ export default {
         justifyContent: 'center',
         borderRadius: 4,
         padding: '0 5px',
-        backgroundColor: 'white',
+        backgroundColor: '$brown3',
         color: 'black',
         '&:hover': { backgroundColor: 'mauve' },
         '&:focus': { boxShadow: `0 0 0 2px black` },
@@ -14,7 +14,7 @@ export default {
     },
     content: {
         overflow: 'hidden',
-        backgroundColor: 'white',
+        backgroundColor: '$brown5',
         boxShadow: '0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)'
     },
     item: {

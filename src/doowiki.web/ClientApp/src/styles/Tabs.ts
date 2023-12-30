@@ -4,7 +4,7 @@ export default {
         flexDirection: 'column',
         alignContent: 'stretch',
         // width: '95%',
-        boxShadow: `0 2px 10px grey`,
+        boxShadow: `    `,
     },
     list:{
         flexShrink: 0,

@@ -27,7 +27,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
                 transform: isOpen ? 'rotate(90deg)' : '',
             },
             toggleStyle: {
-                color: '$accentedText',
+                color: '$slate4',
             }
         }
 

@@ -13,7 +13,7 @@ const ThemeSelector = ()=>{
 
     const styles={
         iconStyles: {
-            color: '$accentedText'
+            color: '$slate11'
         }
     }
 
