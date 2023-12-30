@@ -21,18 +21,25 @@ namespace doowiki.application.Spaces.Commands.SaveSpace
         public async Task<Guid> Handle(SaveSpaceCommand request, CancellationToken cancellationToken)
         {
             Space? space = null;
+            if (string.Equals(request.Name, "Default", StringComparison.OrdinalIgnoreCase))
+                throw new Exception("Cannot Save over the default Space");
+
             if (request.SpaceId != null && request.SpaceId != Guid.Empty)
             {
                 space = await _applicationDbContext.Spaces.FindAsync(request.SpaceId.Value);
 
                 if (space == null)
                     throw new InvalidDataException("No space with ID: " + request.SpaceId);
+
+                if (string.Equals(space.Name, "Default", StringComparison.OrdinalIgnoreCase))
+                    return space.SpaceId;
             }
             else
             {
                 space = new Space();
                 _applicationDbContext.Spaces.Add(space);
-            }
+            }           
+
             space.Name = request.Name;
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);

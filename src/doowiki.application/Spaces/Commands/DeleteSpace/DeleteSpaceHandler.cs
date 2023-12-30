@@ -23,6 +23,9 @@ namespace doowiki.application.Spaces.Commands.DeleteSpace
             if (space == null)
                 throw new InvalidDataException("No space with Id: " + request.SpaceId);
 
+            if (string.Equals(space.Name, "Default", StringComparison.OrdinalIgnoreCase))
+                return;
+
             _context.Spaces.Remove(space);
             await _context.SaveChangesAsync(cancellationToken);
         }
