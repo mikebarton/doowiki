@@ -18,18 +18,15 @@ interface ICanSaveRoles {
 const EditRoles = React.forwardRef((props: IEditRolesProps, ref: React.ForwardedRef<ICanSaveRoles>) => {
     const securityApi = useSecurityApi();
     const userAdmin = useUserAdmin();
+    const userQuery = userAdmin.GetUser(props.userId);
     const [roles, setRoles] = React.useState<string[]>([]);
     const [selectedRole, setSelectedRole] = React.useState<string>('Admin');
 
-    React.useEffect(() => {        
-        getUser();
-    }, [])
-
-    async function getUser() {
-        const retrievedUser = await userAdmin.GetUser(props.userId);
-        if (retrievedUser.roles)
-            setRoles(retrievedUser.roles)
-    }
+    React.useEffect(()=>{
+        if(!userQuery.isPending && userQuery.data?.roles){
+            setRoles(userQuery.data.roles);
+        }
+    },[userQuery.data])
 
     React.useImperativeHandle(ref, () => ({
         onSave() {

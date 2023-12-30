@@ -10,15 +10,11 @@ import YesNoDialog from '../YesNoDialog/YesNoDialog';
 
 const UserList = ()=>{
     const userAdmin = useUserAdmin();
-    const [users, setUsers] = React.useState<GetUserDto[]>([]);
-
-    React.useEffect(()=>{        
-        getUsers();
-    },[])
+    const usersQuery = userAdmin.ListUsers();
 
     async function getUsers(){
-        const retrievedUsers = await userAdmin.ListUsers();
-        setUsers(retrievedUsers);
+        // const retrievedUsers = userAdmin.ListUsers();
+        // setUsers(retrievedUsers.data ?? []);
     }
 
     function onDeleteUser(userId: string){
@@ -33,7 +29,7 @@ const UserList = ()=>{
             color: '$mainText'
         }
     }
-
+    
     return <>
             <Table>
                 <TableHead className={css(styles.tableHeader)()}>
@@ -45,7 +41,7 @@ const UserList = ()=>{
                     
                     </TableHead>
                 <TableBody >
-                    { users.map((u,i)=>{
+                    { usersQuery && usersQuery.data && usersQuery.data.map((u,i)=>{
                         return <TableRow  key={i}>
                             <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.firstName} {u.lastName}<AddUserButton onUpdated={()=> getUsers()} userId={u.userId} /></Flex></TableCell>
                             <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.roles?.join(',')} <EditRolesButton onUpdated={()=> getUsers()} userId={u.userId!}/></Flex></TableCell>

@@ -14,22 +14,19 @@ interface ICanSaveForm {
 
 const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps, ref: React.ForwardedRef<ICanSaveForm>) => {
     const userAdmin = useUserAdmin();
+    const userQuery = userAdmin.GetUser(userId!);
     const [user, setUser] = React.useState<GetUserDto>();
     const [password, setPassword] = React.useState<string>();
     const [confirmPassword, setConfirmPassword] = React.useState<string>();
 
-    React.useEffect(() => {
-        getUser();
-    }, [])
-
-    async function getUser() {
-        if (!userId)
+    React.useEffect(()=>{
+        if(!userId){
             setUser({} as GetUserDto);
-        else {
-            const retrievedUser = await userAdmin.GetUser(userId);
-            setUser(retrievedUser);
         }
-    }
+        else if(!userQuery.isPending){
+            setUser(userQuery.data);
+        }
+    },[userQuery.data])
 
     React.useImperativeHandle(ref, () => ({
         onSave() {
