@@ -66,18 +66,12 @@ const DocumentTree = () => {
     const wikiApi = useWikiApi();
     const { SpaceId, SetSpaceId } = React.useContext(SpaceContext);
     const [documents, setDocuments] = React.useState<DocumentTreeDto[]>([])
+    const documentQuery = wikiApi.GetDocumentTree(SpaceId!);
 
     React.useEffect(() => {
-        const getDocuments = async () => {
-            if (SpaceId) {
-                const newDocs = await wikiApi.GetDocumentTree(SpaceId);
-                if (newDocs)
-                    setDocuments(newDocs);
-            }
-        }
-
-        getDocuments();
-    }, [SpaceId]);
+        if(!documentQuery.isPending && documentQuery.data)
+        setDocuments(documentQuery.data);
+    }, [documentQuery.isPending, documentQuery.data]);
 
 
     return <Flex direction={'column'}>{documents && documents.map(d => <DocumentTreeNode key={d.documentId} item={d} />)}</Flex>

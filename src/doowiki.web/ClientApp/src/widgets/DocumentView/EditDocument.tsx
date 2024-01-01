@@ -19,12 +19,14 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
     const { SpaceId, SetSpaceId } = React.useContext<ISpaceContext>(SpaceContext);
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+    const documentQuery = wikiApi.GetDocument(DocumentId!);
 
 
     React.useEffect(() => {
-        async function getDocument() {
-            const doc = await wikiApi.GetDocument(DocumentId!);
-            setDocument(doc);
+        console.log(`DocumentId: ${DocumentId}`)
+        function getDocument() {
+            if(!documentQuery.isPending)
+                setDocument(documentQuery.data!);
         }
         function initDocument() {
             const doc = {
@@ -38,7 +40,8 @@ const EditDocument = ({ DocumentId }: IEditDocumentProps) => {
             getDocument();
         else
             initDocument();
-    }, [DocumentId]);
+    }, [DocumentId, documentQuery.isPending, documentQuery.data]);
+    
 
     function onCancel() {
         if (DocumentId)

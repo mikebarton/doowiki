@@ -7,18 +7,12 @@ const DocumentList = () => {
     const wikiApi = useWikiApi();
     const { SpaceId, SetSpaceId } =  React.useContext(SpaceContext);
     const [documents, setDocuments] = React.useState<DocumentMetaDto[]>([])
+    const documentQuery = wikiApi.GetDocumentList(SpaceId!);
 
     React.useEffect(()=>{
-        const getDocuments = async () =>{
-            if(SpaceId){
-                const newDocs = await wikiApi.GetDocumentList(SpaceId);
-                if(newDocs)
-                setDocuments(newDocs);
-            }
-        }
-
-        getDocuments();
-    },[SpaceId]);
+        if(!documentQuery.isPending && documentQuery.data)
+        setDocuments(documentQuery.data);
+    },[documentQuery.isPending, documentQuery.data]);
 
     return (
         <>

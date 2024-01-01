@@ -19,14 +19,12 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
     const [document, setDocument] = React.useState<DocumentDto>();
     const navigate = useNavigate();
     const security = useSecurity();
+    const documentQuery = wikiApi.GetDocument(DocumentId);
 
     React.useEffect(()=>{
-        async function getDocument(){
-            const doc = await wikiApi.GetDocument(DocumentId);
-            setDocument(doc);
-        }
-        getDocument();
-    },[DocumentId])
+        if(!documentQuery.isPending && documentQuery.data)
+            setDocument(documentQuery.data);
+    },[documentQuery.isPending, documentQuery.data])
 
     function onEdit(){
         navigate(`/edit/${DocumentId}`)

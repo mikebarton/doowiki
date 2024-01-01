@@ -11,16 +11,13 @@ import YesNoDialog from '../YesNoDialog/YesNoDialog';
 const SpacesList = ()=>{
     const wikiApi = useWikiApi();
     const [spaces, setSpaces] = React.useState<SpaceDto[]>([]);
+    const spacesQuery = wikiApi.GetSpaces();
 
     React.useEffect(()=>{
-        getSpaces();
-    },[])
-
-    async function getSpaces(){
-        const retrievedSpaces = await wikiApi.GetSpaces();
-        setSpaces(retrievedSpaces);
-    }
-
+        if(!spacesQuery.isPending && spacesQuery.data)
+        setSpaces(spacesQuery.data);
+    },[spacesQuery.data, spacesQuery.isPending]);
+    
     function onDeleteSpace(spaceId:string){
         wikiApi.DeleteSpace(spaceId);
     }

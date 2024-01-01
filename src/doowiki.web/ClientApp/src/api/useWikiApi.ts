@@ -1,12 +1,19 @@
 ﻿import { SpaceClient, SpaceDto, SaveSpaceCommand, DocumentMetaDto, DocumentClient, DocumentDto, SaveDocumentCommand, DocumentTreeDto } from "./api.generated.clients";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+interface IQueryResponse<T> {
+    isPending: boolean,
+    data: T | undefined,
+    error: Error
+}
 
 export interface WikiApi {
-    GetSpaces: () => Promise<SpaceDto[]>,
+    GetSpaces: () => IQueryResponse<SpaceDto[]>,
     SaveSpace: (spaceName: string, spaceId?: string | undefined) => Promise<boolean>,
     DeleteSpace: (spaceId: string) => Promise<boolean>,
-    GetDocumentList: (SpaceId: string) => Promise<DocumentMetaDto[]>,
-    GetDocumentTree: (SpaceId: string) => Promise<DocumentTreeDto[]>,
-    GetDocument: (DocumentId: string) => Promise<DocumentDto>,
+    GetDocumentList: (SpaceId: string) => IQueryResponse<DocumentMetaDto[]>,
+    GetDocumentTree: (SpaceId: string) => IQueryResponse<DocumentTreeDto[]>,
+    GetDocument: (DocumentId: string) => IQueryResponse<DocumentDto>,
     SaveDocument: (args: SaveDocumentCommand) => Promise<boolean>
 }
 
@@ -14,16 +21,51 @@ export interface WikiApi {
 export default function (): WikiApi {
     const spaceclient = new SpaceClient();
     const docClient = new DocumentClient();
+    const queryClient = useQueryClient();
 
-    const getSpaces = async (): Promise<SpaceDto[]> => {
-        var spaces = await spaceclient.spaceGet();
-        return spaces;
+    const saveSpaceMutation = useMutation({
+        mutationFn: async ({spaceName, spaceId} : {spaceName: string, spaceId?: string | undefined}) => {
+            const command = { spaceId: spaceId, name: spaceName } as SaveSpaceCommand;
+            await spaceclient.spacePost(command);
+            return true;
+        },
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({queryKey: ['spaces']});
+        }
+    })
+
+    const deleteSpaceMutation = useMutation({
+        mutationFn: (spaceId: string) => spaceclient.spaceDelete(spaceId),
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({queryKey: ['spaces']});
+        }
+    });
+
+    const saveDocumentMutation = useMutation({
+        mutationFn: (doc: SaveDocumentCommand) => docClient.documentPost(doc),
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({queryKey: ['document-meta']});
+            queryClient.invalidateQueries({queryKey: ['document']});
+        }
+    })
+
+    const getSpaces = (): IQueryResponse<SpaceDto[]> => {
+        const getSpaces = useQuery({ queryKey: ['spaces'], queryFn: () => spaceclient.spaceGet() });
+        return getSpaces as IQueryResponse<SpaceDto[]>;
     }
 
     const saveSpace = async (spaceName: string, spaceId?: string | undefined): Promise<boolean> => {
         try {
-            const command = { spaceId: spaceId, name: spaceName } as SaveSpaceCommand;
-            await spaceclient.spacePost(command);
+            return await saveSpaceMutation.mutateAsync({spaceName, spaceId});
+        }
+        catch {
+            return false;
+        }
+    }
+
+    const deleteSpace = async (spaceId: string): Promise<boolean> => {
+        try {
+            await deleteSpaceMutation.mutateAsync(spaceId);
             return true;
         }
         catch {
@@ -31,34 +73,24 @@ export default function (): WikiApi {
         }
     }
 
-    const deleteSpace = async (spaceId: string) : Promise<boolean> =>{
-        try{
-            await spaceclient.spaceDelete(spaceId);
-            return true;
-        }
-        catch{
-            return false;
-        }
+    const getDocuments = (spaceId: string): IQueryResponse<DocumentMetaDto[]> => {
+        const docList = useQuery({ queryKey: ['document-meta', spaceId], queryFn: () => docClient.list(spaceId) });
+        return docList as IQueryResponse<DocumentMetaDto[]>
     }
 
-    const getDocuments = async (spaceId: string): Promise<DocumentMetaDto[]> => {
-        var docs = await docClient.list(spaceId);
-        return docs;
+    const getDocumentTree = (spaceId: string): IQueryResponse<DocumentTreeDto[]> => {
+        const docTree = useQuery({ queryKey: ['document-meta', spaceId], queryFn: () => docClient.tree(spaceId) })
+        return docTree as IQueryResponse<DocumentTreeDto[]>
     }
 
-    const getDocumentTree = async (spaceId: string): Promise<DocumentTreeDto[]> => {
-        var docs = await docClient.tree(spaceId);
-        return docs;
-    }
-
-    const getDocument = async (documentId: string): Promise<DocumentDto> => {
-        var doc = await docClient.documentGet(documentId);
-        return doc;
+    const getDocument = (documentId: string): IQueryResponse<DocumentDto> => {
+        const docQuery = useQuery({ queryKey: ['document', documentId], queryFn: () => docClient.documentGet(documentId) });
+        return docQuery as IQueryResponse<DocumentDto>
     }
 
     const saveDocument = async (args: SaveDocumentCommand): Promise<boolean> => {
         try {
-            await docClient.documentPost(args);
+            await saveDocumentMutation.mutateAsync(args);
             return true;
         }
         catch {

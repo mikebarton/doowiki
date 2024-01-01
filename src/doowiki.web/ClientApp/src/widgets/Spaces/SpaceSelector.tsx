@@ -12,31 +12,37 @@ const SpaceSelector = () => {
     const [spaces, setSpaces] = useState<SpaceDto[]>([])
     const wikiApi = useWikiApi();
     const spaceContext = React.useContext(SpaceContext);
+    const spacesQuery = wikiApi.GetSpaces();
+    const [spaceId, setSpaceId] = React.useState<string>();
 
-    useEffect(() => {
-        const getSpaces = async () => {
-            const spaces = await wikiApi.GetSpaces();
-            setSpaces(spaces);
+    React.useEffect(()=>{
+        if(!spacesQuery.isPending && spacesQuery.data)
+            setSpaces(spacesQuery.data);
+    }, [spacesQuery.data, spacesQuery.isPending])   
 
-            if(spaces && spaces[0].id)
-                spaceContext.SetSpaceId(spaces[0]?.id)
+    React.useEffect(()=>{
+        if(spaces && spaces[0]?.id){
+            spaceContext.SetSpaceId(spaces[0].id);
+            setSpaceId(spaces[0].id);
         }
+    },[spaces])
 
-        getSpaces();
-    }, []);
+    React.useEffect(()=>{
+        setSpaceId(spaceContext.SpaceId);
+    },[spaceContext.SpaceId])
 
     function onSpaceSelected(e:string){
         spaceContext.SetSpaceId(e)
     }
     
     if (!spaces || spaces.length === 0)
-        return <></>
+        return <></>    
 
     return (
         <>
-            <Select.Root defaultValue={spaceContext.SpaceId} onValueChange={onSpaceSelected}>
+            <Select.Root defaultValue={spaceId} value={spaceId} onValueChange={onSpaceSelected}>
                 <SelectTrigger>
-                <Select.Value placeholder="Select a role">{spaces.find(s=>s.id === spaceContext.SpaceId)?.name}</Select.Value>
+                    <Select.Value placeholder="Select a Space">{spaces.find(s=>s.id === spaceId)?.name}</Select.Value>
                     <Select.Icon className="SelectIcon">
                         <ChevronDownIcon />
                     </Select.Icon>

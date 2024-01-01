@@ -24,7 +24,7 @@ const EditSpaceButton = (props: IEditSpaceButtonProps) => {
             <Overlay/>
             <Content>
                 <Dialog.Title>Edit Space</Dialog.Title>
-                <SpaceForm.Content spaceId={props.spaceId} ref={formRef} onUpdated={props.onUpdated}/>
+                <SpaceForm.Content spaceId={props.spaceId} ref={formRef}/>
                 <Dialog.Close>
                     <SpaceForm.SaveButton onClick={()=>formRef?.current?.onSave()}/>
                 </Dialog.Close>

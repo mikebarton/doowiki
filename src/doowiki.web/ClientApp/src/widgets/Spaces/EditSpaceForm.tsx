@@ -13,23 +13,23 @@ interface ICanSaveForm{
 }
 
 const EditSpaceForm = React.forwardRef(({spaceId, onUpdated }: IEditSpaceFormProps, ref: React.ForwardedRef<ICanSaveForm>) =>{
-    const [spaceName, setSpaceName] = React.useState<string>();
+    const [spaceName, setSpaceName] = React.useState<string | null>(null);
     const [spaces, setSpaces] = React.useState<SpaceDto[]>();
     const wikiApi = useWikiApi();
+    const spacesQuery = wikiApi.GetSpaces();
 
-    React.useEffect(() => {
-        const getSpaces = async () => {
-            const spaces = await wikiApi.GetSpaces();
-            setSpaces(spaces);
-            
-            if(spaces){
-                const selectedSpace = spaces.find(x=>x.id === spaceId);
-                setSpaceName(selectedSpace?.name);
-            }
+    React.useEffect(()=>{
+        if(!spacesQuery.isPending)
+            setSpaces(spacesQuery.data);       
+    }, [spacesQuery.data, spacesQuery.isPending])    
+
+    React.useEffect(()=>{
+        if(spaces){
+            const selectedSpace = spaces.find(x=>x.id === spaceId);
+            if(selectedSpace)
+                setSpaceName(selectedSpace?.name || null);
         }
-
-        getSpaces();
-    }, []);
+    },[spaces])
     
     React.useImperativeHandle(ref, ()=>({
         onSave(){
@@ -43,7 +43,7 @@ const EditSpaceForm = React.forwardRef(({spaceId, onUpdated }: IEditSpaceFormPro
             <Form.Label>Space Name</Form.Label>
             <Form.Message match={'valueMissing'}>Enter a SpaceName</Form.Message>
             <Form.Control asChild>
-                <input value={spaceName} onChange={e=> setSpaceName(e.target.value)}/>
+                <input value={spaceName || ''} onChange={e=> setSpaceName(e.target.value)}/>
             </Form.Control>
         </Form.Field>
     </Form.Root>
