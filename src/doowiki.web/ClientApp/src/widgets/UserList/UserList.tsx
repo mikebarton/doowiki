@@ -12,11 +12,6 @@ const UserList = ()=>{
     const userAdmin = useUserAdmin();
     const usersQuery = userAdmin.ListUsers();
 
-    async function getUsers(){
-        // const retrievedUsers = userAdmin.ListUsers();
-        // setUsers(retrievedUsers.data ?? []);
-    }
-
     function onDeleteUser(userId: string){
         userAdmin.DeleteUser(userId);
     }
@@ -43,8 +38,8 @@ const UserList = ()=>{
                 <TableBody >
                     { usersQuery && usersQuery.data && usersQuery.data.map((u,i)=>{
                         return <TableRow  key={i}>
-                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.firstName} {u.lastName}<AddUserButton onUpdated={()=> getUsers()} userId={u.userId} /></Flex></TableCell>
-                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.roles?.join(',')} <EditRolesButton onUpdated={()=> getUsers()} userId={u.userId!}/></Flex></TableCell>
+                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.firstName} {u.lastName}<AddUserButton userId={u.userId} /></Flex></TableCell>
+                            <TableCell><Flex className={css(styles.tableMain)()} gap={3}>{u.roles?.join(',')} <EditRolesButton userId={u.userId!}/></Flex></TableCell>
                             <TableCell>
                                 <Flex className={css(styles.tableMain)()} gap={3}>
                                 <YesNoDialog questionText={`Delete the user ${u.firstName} ${u.lastName}?`} onYes={()=>onDeleteUser(u.userId!)}>

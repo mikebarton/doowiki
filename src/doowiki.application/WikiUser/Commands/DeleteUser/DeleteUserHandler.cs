@@ -32,6 +32,7 @@ namespace doowiki.application.WikiUser.Commands.DeleteUser
 
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync(cancellationToken);
+                scope.Complete();
             }
         }
     }

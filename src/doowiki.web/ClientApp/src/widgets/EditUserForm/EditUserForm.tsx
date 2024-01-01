@@ -40,11 +40,6 @@ const EditUserForm = React.forwardRef(({ userId, onUpdated }: IEditUserFormProps
 
                 task = userAdmin.CreateUser({ ...user, password: password } as CreateUserCommand)
             }
-
-            task.then(() => {
-                if (onUpdated)
-                    onUpdated()
-            });
         }
     }))
 

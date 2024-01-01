@@ -1,5 +1,5 @@
 import { UsersClient, GetUserDto, GetUserItemDto, UpdateUserCommand, CreateUserCommand } from './api.generated.clients';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface IQueryResponse<T>{
     isPending: boolean,
@@ -16,38 +16,57 @@ interface IUseUserAdmin {
 }
 
 export default function (): IUseUserAdmin {
+    const client = new UsersClient();
+    const queryClient = useQueryClient();
+
+    const updateMutation = useMutation({
+        mutationFn: (user : UpdateUserCommand) => client.usersPut(user, user.userId!), 
+        onSuccess: (data, cmd)=>{
+            console.log(`saved!! - ${JSON.stringify(cmd)}`)
+            queryClient.invalidateQueries({ queryKey: ['users']});
+    }});
+
+    const createMutation = useMutation({
+        mutationFn: (user: CreateUserCommand) => client.usersPost(user),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['users']});
+        }
+    })
+
+    const deleteMutation = useMutation({
+        mutationFn: (userId: string) => client.usersDelete(userId),
+        onSuccess: ()=> {
+            queryClient.invalidateQueries({queryKey: ['users']})
+        }
+    })
 
     const listUsers = (): IQueryResponse<GetUserItemDto[]> => {
-        const client = new UsersClient();
-        const listUsers = useQuery({queryKey:['list-users'], queryFn: ()=>client.list()});
+        const listUsers = useQuery({queryKey:['users'], queryFn: ()=>client.list()});
         return listUsers as IQueryResponse<GetUserItemDto[]>
     }  
     
 
-    const getUser = (userid: string): IQueryResponse<GetUserDto> => {
-        const client = new UsersClient();
-        const user = useQuery({queryKey: ['get-user'], queryFn: ()=> client.usersGet(userid)})
+    const getUser = (userid: string): IQueryResponse<GetUserDto> => {        
+        const user = useQuery({queryKey: ['users', userid], queryFn: ()=> client.usersGet(userid)})
         return user as IQueryResponse<GetUserDto>;
     }
 
     const updateUser = async (user: UpdateUserCommand): Promise<boolean> => {
-        const client = new UsersClient();
         if (!user.userId)
             throw new Error("cannot update user without id");
 
         try {
-            await client.usersPut(user, user.userId!);
+            updateMutation.mutateAsync(user);
             return true;
         }
         catch {
             return false;
         }
-    }
+    }    
 
     const createUser = async (user: CreateUserCommand): Promise<boolean> => {
-        const client = new UsersClient();
         try {
-            await client.usersPost(user);
+            await createMutation.mutateAsync(user);
             return true;
         }
         catch {
@@ -56,9 +75,8 @@ export default function (): IUseUserAdmin {
     }
 
     const deleteUser = async (userId: string) : Promise<boolean> => {
-        const client = new UsersClient();
         try{
-            await client.usersDelete(userId);
+            await deleteMutation.mutateAsync(userId);
             return true;
         }
         catch{
