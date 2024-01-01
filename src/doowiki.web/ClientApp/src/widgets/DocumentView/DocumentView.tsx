@@ -36,16 +36,17 @@ const DocumentView = ({DocumentId} : IDocumentViewProps)=>{
 
     const jssStyles={
         heading:{
-            color: '$brown11'
+            color: '$indigo12'
         },
         content:{
-            backgroundColor: '$amber1',
+            backgroundColor: '$indigo1',
+            color: '$slate12',
             boxShadow: '0 2px 10px grey',
         }
     }
 
     return (
-        <Div padding={[3]} margin={[0,3,0,0]} className={css(jssStyles.content)()}>
+        <Div padding={[3]} margin={[2]} className={css(jssStyles.content)()}>
             <Flex direction={'column'} justify={'flex-start'} align={'stretch'} gap={1} padding={[1]}>
                 <Flex className={css(jssStyles.heading)()} align={'center'}>
                     <Heading className={css(jssStyles.heading)()}>{document?.name}</Heading>

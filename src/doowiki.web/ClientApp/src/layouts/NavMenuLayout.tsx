@@ -9,7 +9,7 @@ import { ColorModeContext } from '../utils/ColorModeProvider';
 
 const NavMenuLayout = () => {
     const securityApi = useSecurityApi();
-    const colourContext= React.useContext(ColorModeContext)
+    const colourContext = React.useContext(ColorModeContext)
     React.useEffect(() => {
         securityApi.LoadSession();
         colourContext.setColourMode('light');
@@ -17,36 +17,44 @@ const NavMenuLayout = () => {
 
     const styles = {
         navStyle: {
-            width: '400px'
+            width: '400px',
+            // overflow: 'auto'
         },
         contentStyle: {
             width: '100%',
             overflow: 'auto'
         },
         navMenu: {
-            backgroundColor: '$indigo7',
-            color:'$slate11',
+            backgroundColor: '$indigo9',
+            color: '$slate4',
             width: '400px'
         },
         mainPane: {
-            backgroundColor: '$gold4',
-            color: '$brown12'
+            backgroundColor: '$indigo3',
+            color: '$slate11'
+        },
+        headRow: {
+            backgroundColor: '$indigo5'
         }
     }
 
 
     return (
-        <Flex direction={'row'} justify={'flex-start'} align={'stretch'} height={'100vh'} className={css(styles.mainPane)()}>
-            <Flex className={css(styles.navMenu)()} direction={'column'} justify={'flex-start'} align={'stretch'} gap={3} margin={[1]}>
-                <NavMenu />
+        <Flex direction='column' height={'100vh'} align='stretch'>
+            <Flex direction='row' justify={'flex-end'} grow={0} className={css(styles.headRow)()} padding={[1]}>
+                <AdminButton />
             </Flex>
-            <Flex direction={'column'} justify={'flex-start'} align={'stretch'} className={css(styles.contentStyle)()}>
-                <Flex justify={'flex-end'}>
-                    <AdminButton />
-                </Flex>
-                <Div width={'100%'} height={'100%'}><Outlet /></Div>
-            </Flex>
+            <Flex direction={'row'} justify={'flex-start'} align={'stretch'} grow={1} className={css(styles.mainPane)()} height='100%'>
 
+                <Flex className={css(styles.navMenu)()} direction={'column'} justify={'flex-start'} align={'stretch'} gap={3} >
+                    <Div style={{ flexGrow: 1 }}><NavMenu /></Div>
+                </Flex>
+
+                <Flex direction={'column'} justify={'flex-start'} align={'stretch'} grow={1} height='100%'>
+                    <Div height='100%' width='100%' className={css(styles.contentStyle)()}><Outlet /></Div>
+                </Flex>
+
+            </Flex>
         </Flex>
     )
 }
