@@ -12,7 +12,7 @@ namespace doowiki.application.Documents.Commands.SaveDocument
     {
         public SaveSpaceCommandValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().MinimumLength(1);
         }
     }
 }

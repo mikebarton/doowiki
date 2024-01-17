@@ -16,10 +16,6 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
     
 
     const Toggle = () => {
-        const buttonStyles : React.CSSProperties = {
-                visibility: (!item.children || item.children.length === 0) ? 'hidden' : 'visible',
-                transform: isOpen ? 'rotate(90deg)' : '',
-        }      
         
         const styles = { 
             buttonStyle: {
@@ -31,7 +27,7 @@ const DocumentTreeNode = ({ item }: IDocumentTreeNodeProps) => {
             }
         }
 
-        return <Flex align={'center'} >
+        return <Flex direction='column' justify={'flex-start'} >
                     <Button variant={'ghost'} className={css(styles.buttonStyle)()} onClick={() => setIsOpen(!isOpen)} >
                         <TriangleRightIcon width={'24'} height={'24'} className={css(styles.toggleStyle)()}/>
                     </Button>

@@ -21,7 +21,10 @@ namespace doowiki.infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<DocumentContent>().HasKey(x => x.DocumentId);
             modelBuilder.Entity<DocumentMetaData>().HasKey(x => x.DocumentId);
-            modelBuilder.Entity<DocumentMetaData>().HasOne<DocumentContent>(x => x.Content).WithOne().HasForeignKey<DocumentContent>(x=>x.DocumentId);            
+            modelBuilder.Entity<DocumentMetaData>()
+                .HasOne<DocumentContent>(x => x.Content)
+                .WithOne()
+                .HasForeignKey<DocumentContent>(x=>x.DocumentId);            
         }
 
         public DbSet<DocumentMetaData> Documents { get; set; }

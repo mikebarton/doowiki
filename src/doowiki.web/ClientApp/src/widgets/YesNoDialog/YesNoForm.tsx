@@ -10,7 +10,7 @@ interface IYesNoFormProps{
 }
 
 const YesNoForm = (props: IYesNoFormProps) => {
-    return <Flex direction='column' alignContent={'flex-start'} gap={3}>
+    return <Flex direction='column' align={'flex-start'} gap={3}>
         <Heading size={3}>{props.questionText || 'Are you sure?'}</Heading>
         <Flex>
             <Button onClick={props.onSubmitNo}>{props.negativeText || 'No'}</Button>

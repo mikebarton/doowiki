@@ -2,7 +2,6 @@
 using doowiki.application.Common.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using static doowiki.api.Endpoints.Account;
 using System.Threading.Tasks;
 using doowiki.application.Security.Commands.SetUserRoles;
 using Microsoft.AspNetCore.Http;
