@@ -36,7 +36,7 @@ namespace doowiki.api
             //    options.SlidingExpiration = true;
             //});
             var app = builder.Build();
-
+            app.ApplyMigrations();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

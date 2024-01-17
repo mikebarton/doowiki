@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 
 namespace doowiki.infrastructure
 {
@@ -51,6 +52,20 @@ namespace doowiki.infrastructure
             .AddDefaultTokenProviders();
 
             return services;
+        }
+
+        public static WebApplication ApplyMigrations(this WebApplication app)
+        {
+            using(var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.Migrate();
+
+                var identityContext = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
+                identityContext.Database.Migrate();
+            }
+
+            return app;
         }
     }
 }
