@@ -47,7 +47,7 @@ namespace doowiki.api
 
             services.AddSpaStaticFiles(configuration =>
             {                
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = "wwwroot";
 
             });
 

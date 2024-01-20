@@ -13,3 +13,11 @@ services:
       - $USERPROFILE\doowiki-volume:/var/lib/mysql
     ports:
       - "3306:3306"
+  doowiki:
+    container_name: doowiki-app
+    restart: always
+    image: doowiki
+    environment: 
+      ConnectionStrings__doowiki-mysql: 'server=mysql;uid=dev;pwd=telogreika;database=doowiki'
+    ports:
+      - '8080:8080'
